@@ -1,16 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
-import { AppService } from '../../domain/services/app.service';
+import { HealthService } from '../../domain/services/health.service';
 
 @Controller()
-export class AppController {
+export class HealthController {
 	constructor(
-		private readonly appService: AppService,
+		private readonly health: HealthService,
 		public logger: Logger,
 	) {}
 
 	@Get()
 	getHello(): string {
-		return this.appService.getHello();
+		return this.health.getHello();
 	}
 }

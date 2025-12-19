@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
-import { AppService } from './domain/services/app.service';
-import { AppController } from './http/controllers/app.controller';
+import { HealthService } from './domain/services/health.service';
+import { HealthController } from './http/controllers/health.controller';
 import { envSchema } from './infra/config/env';
 
 @Module({
@@ -14,7 +14,7 @@ import { envSchema } from './infra/config/env';
 			pinoHttp: {},
 		}),
 	],
-	controllers: [AppController],
-	providers: [AppService],
+	controllers: [HealthController],
+	providers: [HealthService],
 })
 export class AppModule {}
