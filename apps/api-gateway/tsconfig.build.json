@@ -1,0 +1,7 @@
+{
+	"extends": "../../packages/tsconfig/node-build.json",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"baseUrl": "./"
+	}
+}
