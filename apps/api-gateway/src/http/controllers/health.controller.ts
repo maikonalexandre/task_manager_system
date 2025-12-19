@@ -1,15 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { Logger } from 'nestjs-pino';
 import { HealthService } from '../../domain/services/health.service';
 
 @Controller()
 export class HealthController {
-	constructor(
-		private readonly health: HealthService,
-		public logger: Logger,
-	) {}
+	constructor(private readonly health: HealthService) {}
 
-	@Get()
+	@Get('/health')
 	getHello(): string {
 		return this.health.getHello();
 	}
