@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { envSchema } from './config/env';
+import { AppService } from './domain/services/app.service';
+import { AppController } from './http/controllers/app.controller';
+import { envSchema } from './infra/config/env';
 
 @Module({
 	imports: [
