@@ -1,5 +1,6 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
@@ -18,12 +19,18 @@
 			"recommended": true,
 			"style": {
 				"useImportType": "off"
+			},
+			"correctness": {
+				"noUnusedFunctionParameters": "off"
 			}
 		}
 	},
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
 		}
 	},
 	"assist": {
