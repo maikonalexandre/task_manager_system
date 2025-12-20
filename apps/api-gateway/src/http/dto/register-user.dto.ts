@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { UserRegisterInterface } from "@repo/shared";
 import { IsEmail, IsString, MaxLength, MinLength } from "class-validator";
 
-export class RegisterUserDto {
+export class RegisterUserDto implements UserRegisterInterface {
 	@ApiProperty({
 		example: "joao_silva",
 		description: "User's username",

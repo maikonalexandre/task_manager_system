@@ -1,0 +1,11 @@
+{
+	"name": "@repo/shared",
+	"version": "0.0.0",
+	"private": true,
+	"license": "UNLICENSED",
+	"main": "./index.ts",
+	"types": "./index.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

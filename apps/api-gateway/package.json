@@ -11,5 +11,8 @@
 		"dev": "nest start --watch",
 		"debug": "nest start --debug --watch",
 		"prod": "node dist/main"
+	},
+	"dependencies": {
+		"@repo/shared": "*"
 	}
 }
