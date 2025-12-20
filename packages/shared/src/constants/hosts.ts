@@ -1,3 +1,3 @@
 export const hosts = {
-	AUTH: "auth-service",
+	AUTH: "127.0.0.1",
 } as const;

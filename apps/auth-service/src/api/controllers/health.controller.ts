@@ -4,8 +4,10 @@ import { messages } from "@repo/shared";
 
 @Controller()
 export class HealthController {
-	@MessagePattern({ cmd: messages.HEALTH_CHECK })
+	@MessagePattern(messages.AUTH_MESSAGES.HEALTH_CHECK)
 	check() {
+	  console.log("OK")
+
 		return {
 			status: "ok",
 			service: "auth-service",

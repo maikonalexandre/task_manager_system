@@ -3,13 +3,13 @@ import { UserLoginProps, UserRegisterProps } from "@repo/shared";
 
 @Injectable()
 export class AuthService {
-	register(userDto: UserRegisterProps) {
-		console.log("user", userDto);
+	register(registerProps: UserRegisterProps) {
+		console.log("user", registerProps);
 		return "OK";
 	}
 
-	login(loginDto: UserLoginProps) {
-		console.log("user", loginDto);
+	login(loginProps: UserLoginProps) {
+		console.log("user", loginProps);
 		return "OK";
 	}
 
