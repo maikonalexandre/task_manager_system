@@ -27,7 +27,6 @@ FROM base AS development
 WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/api-gateway/node_modules ./apps/api-gateway/node_modules
 COPY --from=builder /app/apps/api-gateway/dist ./apps/api-gateway/dist
 COPY --from=builder /app/apps/api-gateway/package.json ./apps/api-gateway/package.json
 
