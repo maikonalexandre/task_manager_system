@@ -1,11 +1,10 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { LoggerModule } from 'nestjs-pino';
-import { HealthService } from './domain/services/health.service';
-import { HealthController } from './http/controllers/health.controller';
-import { envSchema } from './infra/config/env';
-import { AuthController } from './http/controllers/auth.controller';
-import { AuthService } from './domain/services/auth.service';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { LoggerModule } from "nestjs-pino";
+import { AuthService } from "./domain/services/auth.service";
+import { AuthController } from "./http/controllers/auth.controller";
+import { HealthController } from "./http/controllers/health.controller";
+import { envSchema } from "./infra/config/env";
 
 @Module({
 	imports: [
@@ -17,6 +16,6 @@ import { AuthService } from './domain/services/auth.service';
 		}),
 	],
 	controllers: [HealthController, AuthController],
-	providers: [HealthService, AuthService],
+	providers: [AuthService],
 })
 export class AppModule {}

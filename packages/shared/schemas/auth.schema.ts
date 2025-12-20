@@ -5,7 +5,7 @@ export const userLoginSchema = z.object({
 	password: z.string().min(6).max(16),
 });
 
-export type UserLoginInterface = z.infer<typeof userLoginSchema>;
+export type UserLoginProps = z.infer<typeof userLoginSchema>;
 
 export const userRegisterSchema = z.object({
 	email: z.email(),
@@ -13,4 +13,4 @@ export const userRegisterSchema = z.object({
 	password: z.string().min(6).max(16),
 });
 
-export type UserRegisterInterface = z.infer<typeof userRegisterSchema>;
+export type UserRegisterProps = z.infer<typeof userRegisterSchema>;
