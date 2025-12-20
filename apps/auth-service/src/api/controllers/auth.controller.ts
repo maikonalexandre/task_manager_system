@@ -9,17 +9,17 @@ import { RegisterUserDto } from "../dto/register-user.dto";
 export class AuthController {
 	constructor(private readonly auth: AuthService) {}
 
-	@MessagePattern(messages.AUTH_MESSAGES.CMD.REGISTER)
+	@MessagePattern(messages.AUTH_MESSAGES.REGISTER)
 	registerUser(@Body() registerUserDto: RegisterUserDto) {
 		return this.auth.register(registerUserDto);
 	}
 
-	@MessagePattern(messages.AUTH_MESSAGES.CMD.LOGIN)
+	@MessagePattern(messages.AUTH_MESSAGES.LOGIN)
 	login(@Body() loginUserDto: LoginUserDto) {
 		return this.auth.login(loginUserDto);
 	}
 
-	@MessagePattern(messages.AUTH_MESSAGES.CMD.REFRESH)
+	@MessagePattern(messages.AUTH_MESSAGES.REFRESH)
 	refresh() {
 		return this.auth.refresh();
 	}
