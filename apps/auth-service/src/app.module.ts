@@ -1,11 +1,9 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { LoggerModule } from "nestjs-pino";
-import { AuthService } from "./domain/services/auth.service";
-import { envSchema } from "./infra/config/env";
-import { DatabaseModule } from "./infra/database/typeorm/typeorm.module";
-import { AuthController } from "./infra/http/controllers/auth.controller";
-import { HealthController } from "./infra/http/controllers/health.controller";
+import { envSchema } from "./infra/env/env";
+import { EnvModule } from "./infra/env/env.module";
+import { HttpModule } from "./infra/http/http.module";
 
 @Module({
 	imports: [
@@ -13,12 +11,9 @@ import { HealthController } from "./infra/http/controllers/health.controller";
 			validate: (env) => envSchema.parse(env),
 			isGlobal: true,
 		}),
-		LoggerModule.forRoot({
-			pinoHttp: {},
-		}),
-		DatabaseModule,
+		LoggerModule.forRoot({ pinoHttp: {} }),
+		EnvModule,
+		HttpModule,
 	],
-	controllers: [HealthController, AuthController],
-	providers: [AuthService],
 })
 export class AppModule {}
