@@ -12,8 +12,9 @@
 		"debug": "nest start --debug --watch",
 		"prod": "node dist/main"
 	},
-
 	"dependencies": {
-		"@repo/shared": "*"
+		"@repo/shared": "*",
+		"pg": "^8.16.3",
+		"typeorm": "^0.3.28"
 	}
 }
