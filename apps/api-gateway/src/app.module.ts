@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { LoggerModule } from "nestjs-pino";
 import { AuthService } from "./domain/services/auth.service";
-import { AuthController } from "./http/controllers/auth.controller";
-import { HealthController } from "./http/controllers/health.controller";
+import { AuthController } from "./infra/http/controllers/auth.controller";
+import { HealthController } from "./infra/http/controllers/health.controller";
 import { envSchema } from "./infra/config/env";
 
 @Module({
