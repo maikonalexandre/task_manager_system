@@ -12,10 +12,8 @@ export class UserTypeOrmRepository implements UserRepository {
 		private readonly repo: Repository<UserEntity>,
 	) {}
 
-	async findByEmailOrUsername(value: string): Promise<User | null> {
-		const user = await this.repo.findOne({
-			where: [{ email: value }, { username: value }],
-		});
+	async findByEmail(value: string): Promise<User | null> {
+		const user = await this.repo.findOne({ where: [{ email: value }] });
 
 		if (!user) return null;
 
@@ -24,14 +22,13 @@ export class UserTypeOrmRepository implements UserRepository {
 			user.email,
 			user.username,
 			user.password,
-			// user.createdAt,
-			// user.updatedAt,
+			user.createdAt,
+			user.updatedAt,
 		);
 	}
 
-	async save(user: User): Promise<void> {
+	async save(user: Omit<User, "id">): Promise<void> {
 		await this.repo.save({
-			id: user.id,
 			email: user.email,
 			username: user.username,
 			password: user.password,
