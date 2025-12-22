@@ -12,22 +12,13 @@ export class UserTypeOrmRepository implements UserRepository {
 		private readonly repo: Repository<UserEntity>,
 	) {}
 
-	async findByEmail(value: string): Promise<User | null> {
-		const user = await this.repo.findOne({ where: [{ email: value }] });
-
+	async findByEmail(email: string) {
+		const user = await this.repo.findOne({ where: [{ email: email }] });
 		if (!user) return null;
-
-		return new User(
-			user.id,
-			user.email,
-			user.username,
-			user.password,
-			user.createdAt,
-			user.updatedAt,
-		);
+		return user;
 	}
 
-	async save(user: Omit<User, "id">): Promise<void> {
+	async save(user: Omit<User, "id">) {
 		await this.repo.save({
 			email: user.email,
 			username: user.username,

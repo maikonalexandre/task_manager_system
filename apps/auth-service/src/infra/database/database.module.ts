@@ -19,7 +19,7 @@ import { UserTypeOrmRepository } from "./typeorm/repositories/user.reposirory";
 					username: env.get("DB_USERNAME"),
 					password: env.get("DB_PASSWORD"),
 					database: env.get("DB_DATABASE"),
-					entities: [UserEntity],
+					autoLoadEntities: true,
 					synchronize: true,
 				};
 			},
