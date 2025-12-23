@@ -31,7 +31,9 @@ export class AuthService {
 
 	async refresh(token: string) {
 		const url = `${this.authServiceUrl}/refresh`;
-		const response = await firstValueFrom(this.http.post(url, {}));
+		const response = await firstValueFrom(
+			this.http.post(url, {}, { headers: { "x-refresh-token": token } }),
+		);
 
 		return response.data;
 	}
