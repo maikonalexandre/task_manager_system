@@ -12,6 +12,12 @@ export class UserTypeOrmRepository implements UserRepository {
 		private readonly repo: Repository<UserEntity>,
 	) {}
 
+	async findById(id: string) {
+		const user = await this.repo.findOne({ where: [{ id }] });
+		if (!user) return null;
+		return user;
+	}
+
 	async findByEmail(email: string) {
 		const user = await this.repo.findOne({ where: [{ email: email }] });
 		if (!user) return null;

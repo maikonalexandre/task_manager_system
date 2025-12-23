@@ -61,7 +61,24 @@ export class AuthService {
 		};
 	}
 
-	refresh() {
-		return "OK";
+	async refresh(userId: string) {
+		const user = await this.usersRepository.findById(userId);
+
+		if (!user) throw new UnauthorizedException("user not found");
+
+		const token = this.jwtAuthService.createAccessToken({
+			sub: user.id,
+		});
+
+		const refreshToken = this.jwtAuthService.createRefreshToken({
+			sub: user.id,
+		});
+
+		return {
+			username: user.username,
+			email: user.email,
+			token,
+			refresh_token: refreshToken,
+		};
 	}
 }

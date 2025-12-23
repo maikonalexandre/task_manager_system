@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { tokenPayloadSchema, UserTokenPayload } from "@repo/shared";
+import { UserTokenPayload } from "@repo/shared";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { EnvService } from "../env/env.service";
 
@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	}
 
 	validate(token: UserTokenPayload) {
-		return tokenPayloadSchema.parse(token);
+		return token;
 	}
 }
 
@@ -25,12 +25,12 @@ export class JwtStrategyRefresh extends PassportStrategy(
 ) {
 	constructor(env: EnvService) {
 		super({
-			jwtFromRequest: ExtractJwt.fromBodyField("refreshToken"),
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			secretOrKey: env.get("REFRESH_JWT_SECRET"),
 		});
 	}
 
 	validate(token: UserTokenPayload) {
-		return tokenPayloadSchema.parse(token);
+		return token;
 	}
 }
