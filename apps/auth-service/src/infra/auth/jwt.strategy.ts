@@ -7,9 +7,12 @@ import { EnvService } from "../env/env.service";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 	constructor(env: EnvService) {
+		const publicKey = env.get("JWT_PUBLIC_KEY");
+
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			secretOrKey: env.get("JWT_SECRET"),
+			secretOrKey: Buffer.from(publicKey, "base64"),
+			algorithms: ["RS256"],
 		});
 	}
 
@@ -27,6 +30,7 @@ export class JwtStrategyRefresh extends PassportStrategy(
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			secretOrKey: env.get("REFRESH_JWT_SECRET"),
+			algorithms: ["HS256"],
 		});
 	}
 

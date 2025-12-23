@@ -12,7 +12,6 @@ export class JwtService {
 
 	createAccessToken(payload: UserTokenPayload) {
 		return this.jwt.sign(payload, {
-			secret: this.env.get("JWT_SECRET"),
 			expiresIn: "15m",
 		});
 	}
@@ -20,6 +19,7 @@ export class JwtService {
 	createRefreshToken(payload: UserTokenPayload) {
 		return this.jwt.sign(payload, {
 			secret: this.env.get("REFRESH_JWT_SECRET"),
+			algorithm: "HS256",
 			expiresIn: "7d",
 		});
 	}
