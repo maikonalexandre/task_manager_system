@@ -1,12 +1,13 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Headers, Post } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiConflictResponse,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import { AuthService } from "../../../domain/services/auth.service";
+import { AuthService } from "../../services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
 
@@ -26,13 +27,15 @@ export class AuthController {
 	@Post("/login")
 	@ApiOperation({ summary: "Login with user and password" })
 	@ApiOkResponse({ description: "Successful login" })
-	@ApiBadRequestResponse({ description: "Invalid user's data" })
+	@ApiBadRequestResponse({ description: "Invalid data" })
+	@ApiUnauthorizedResponse({ description: "Invalid user's credentials" })
 	login(@Body() loginUserDto: LoginUserDto) {
 		return this.auth.login(loginUserDto);
 	}
 
 	@Post("/refresh")
-	refresh() {
-		return this.auth.refresh();
+	@ApiUnauthorizedResponse({ description: "Invalid refresh token" })
+	refresh(@Headers("x-refresh-token") header: string) {
+		return this.auth.refresh(header);
 	}
 }

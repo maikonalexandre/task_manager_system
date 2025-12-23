@@ -5,22 +5,22 @@ import { AuthService } from "../../../domain/services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
 
-@Controller("/auth")
+@Controller("")
 export class AuthController {
 	constructor(private readonly auth: AuthService) {}
 
-	@Post("/register")
+	@Post("register")
 	registerUser(@Body() registerUserDto: RegisterUserDto) {
 		return this.auth.register(registerUserDto);
 	}
 
-	@Post("/login")
+	@Post("login")
 	login(@Body() loginUserDto: LoginUserDto) {
 		return this.auth.login(loginUserDto);
 	}
 
 	@UseGuards(JwtRefreshAuthGuard)
-	@Post("/refresh")
+	@Post("refresh")
 	refresh(@GetCurrentUser() user: { sub: string }) {
 		return this.auth.refresh(user.sub);
 	}

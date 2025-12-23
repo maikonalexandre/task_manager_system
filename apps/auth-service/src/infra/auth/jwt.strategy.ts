@@ -28,7 +28,7 @@ export class JwtStrategyRefresh extends PassportStrategy(
 ) {
 	constructor(env: EnvService) {
 		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: ExtractJwt.fromHeader("x-refresh-token"),
 			secretOrKey: env.get("REFRESH_JWT_SECRET"),
 			algorithms: ["HS256"],
 		});
