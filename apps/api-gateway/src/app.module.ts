@@ -4,6 +4,7 @@ import { LoggerModule } from "nestjs-pino";
 import { envSchema } from "./env/env";
 import { EnvModule } from "./env/env.module";
 import { HttpModule } from "./http/http.module";
+import { VerifyModule } from "./validation/validation.module";
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import { HttpModule } from "./http/http.module";
 		LoggerModule.forRoot({ pinoHttp: {} }),
 		EnvModule,
 		HttpModule,
+		VerifyModule,
 	],
 })
 export class AppModule {}
