@@ -1,6 +1,7 @@
 version: '3.0'
 
 services:
+#----- DB ----------------------------------------
   db:
     image: postgres:17.5-alpine3.21
     container_name: postgres
@@ -16,6 +17,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: challenge_db
 
+#----- API GATEWAY ---------------------------------
   api-gateway:
     container_name: api-gateway
     build:
@@ -43,6 +45,7 @@ services:
     networks:
       - challenge-network
 
+#----- AUTH SERVICE ---------------------------------
   auth-service:
     container_name: auth-service
     build:
