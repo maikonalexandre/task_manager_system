@@ -6,8 +6,8 @@ import {
 
 import { UserLoginProps, UserRegisterProps } from "@repo/shared";
 import { compare, hash } from "bcryptjs";
-import { JwtService } from "src/infra/auth/jwt.service";
-import { UserTypeOrmRepository } from "src/infra/database/typeorm/repositories/user.reposirory";
+import { JwtService } from "../../../common/jwt.service";
+import { UserTypeOrmRepository } from "../repositories/user.repository";
 
 @Injectable()
 export class AuthService {

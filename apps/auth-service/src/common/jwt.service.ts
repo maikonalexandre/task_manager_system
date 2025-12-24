@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService as NestJwtAuthService } from "@nestjs/jwt";
 import { UserTokenPayload } from "@repo/shared";
-import { EnvService } from "../env/env.service";
+import { EnvService } from "../config/env/env.service";
 
 @Injectable()
 export class JwtService {

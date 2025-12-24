@@ -2,8 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EnvModule } from "../env/env.module";
 import { EnvService } from "../env/env.service";
-import { UserEntity } from "./typeorm/entities/user.entity";
-import { UserTypeOrmRepository } from "./typeorm/repositories/user.reposirory";
 
 @Module({
 	imports: [
@@ -24,10 +22,6 @@ import { UserTypeOrmRepository } from "./typeorm/repositories/user.reposirory";
 				};
 			},
 		}),
-		TypeOrmModule.forFeature([UserEntity]),
 	],
-
-	providers: [UserTypeOrmRepository],
-	exports: [UserTypeOrmRepository],
 })
 export class DatabaseModule {}

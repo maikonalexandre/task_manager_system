@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { GetCurrentUser } from "src/infra/auth/current-user-decorator";
-import { JwtRefreshAuthGuard } from "src/infra/auth/jwt.guard";
-import { AuthService } from "../../../domain/services/auth.service";
+import { GetCurrentUser } from "src/common/current-user-decorator";
+import { JwtRefreshAuthGuard } from "src/common/jwt.guard";
+import { AuthService } from "../../../modules/auth/services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
 
