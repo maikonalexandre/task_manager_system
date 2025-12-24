@@ -3,9 +3,11 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
+import { CommentEntity } from "./comments.entity";
 
 @Entity("tasks")
 export class TaskEntity {
@@ -37,6 +39,12 @@ export class TaskEntity {
 
 	@Column("uuid", { array: true, default: "{}" })
 	assignedUserIds!: string[];
+
+	@OneToMany(
+		() => CommentEntity,
+		(comment) => comment.task,
+	)
+	comments?: CommentEntity[];
 
 	@CreateDateColumn()
 	createdAt!: Date;
