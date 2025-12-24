@@ -7,6 +7,7 @@ export const envSchema = z.object({
 	DB_USERNAME: z.string(),
 	DB_PASSWORD: z.coerce.string(),
 	DB_DATABASE: z.string(),
+	RABBITMQ_URL: z.string(),
 });
 
 export type ENV = z.infer<typeof envSchema>;

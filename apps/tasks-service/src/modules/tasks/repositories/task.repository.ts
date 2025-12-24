@@ -12,6 +12,6 @@ export class TaskTypeOrmRepository {
 	) {}
 
 	async save(task: CreateTaskProps) {
-		await this.repo.save(task);
+		return await this.repo.save(task);
 	}
 }
