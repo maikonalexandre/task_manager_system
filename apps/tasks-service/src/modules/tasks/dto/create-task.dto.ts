@@ -1,4 +1,5 @@
 import { CreateTaskProps, TaskPriority, TaskStatus } from "@repo/shared";
+import { Type } from "class-transformer";
 import {
 	IsArray,
 	IsDate,
@@ -18,12 +19,15 @@ export class CreateTaskDto implements CreateTaskProps {
 	@MinLength(3)
 	description!: string;
 
+	@Type(() => Date)
 	@IsDate()
 	deadline!: Date;
 
+	@IsOptional()
 	@IsEnum(TaskPriority)
 	priority!: TaskPriority;
 
+	@IsOptional()
 	@IsEnum(TaskStatus)
 	status!: TaskStatus;
 
