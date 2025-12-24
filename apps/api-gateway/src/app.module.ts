@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { LoggerModule } from "nestjs-pino";
-import { envSchema } from "./env/env";
-import { EnvModule } from "./env/env.module";
-import { HttpModule } from "./http/http.module";
-import { VerifyModule } from "./validation/validation.module";
+import { envSchema } from "./config/env/env";
+import { EnvModule } from "./config/env/env.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { ValidationModule } from "./modules/validation/validation.module";
 
 @Module({
 	imports: [
@@ -14,8 +14,8 @@ import { VerifyModule } from "./validation/validation.module";
 		}),
 		LoggerModule.forRoot({ pinoHttp: {} }),
 		EnvModule,
-		HttpModule,
-		VerifyModule,
+		AuthModule,
+		ValidationModule,
 	],
 })
 export class AppModule {}

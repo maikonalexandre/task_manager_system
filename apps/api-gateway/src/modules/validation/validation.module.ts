@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
-import { EnvService } from "../env/env.service";
-import { JwtStrategy } from "./jwt.strategy";
+import { JwtStrategy } from "../../common/jwt.strategy";
+import { EnvService } from "../../config/env/env.service";
 
 @Module({
 	imports: [
@@ -15,4 +15,4 @@ import { JwtStrategy } from "./jwt.strategy";
 	],
 	providers: [EnvService, JwtStrategy],
 })
-export class VerifyModule {}
+export class ValidationModule {}

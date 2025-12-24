@@ -7,15 +7,15 @@ import {
 	ApiOperation,
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import { AuthService } from "../../services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
+import { AuthService } from "../services/auth.service";
 
-@Controller("/auth")
+@Controller("auth")
 export class AuthController {
 	constructor(private readonly auth: AuthService) {}
 
-	@Post("/register")
+	@Post("register")
 	@ApiOperation({ summary: "Register a new user" })
 	@ApiCreatedResponse({ description: "User created" })
 	@ApiBadRequestResponse({ description: "Invalid user's data" })
@@ -24,7 +24,7 @@ export class AuthController {
 		return this.auth.register(registerUserDto);
 	}
 
-	@Post("/login")
+	@Post("login")
 	@ApiOperation({ summary: "Login with user and password" })
 	@ApiOkResponse({ description: "Successful login" })
 	@ApiBadRequestResponse({ description: "Invalid data" })
@@ -33,7 +33,7 @@ export class AuthController {
 		return this.auth.login(loginUserDto);
 	}
 
-	@Post("/refresh")
+	@Post("refresh")
 	@ApiOperation({ summary: "Generate a new auth token" })
 	@ApiOkResponse({ description: "New auth token generated" })
 	@ApiUnauthorizedResponse({ description: "Invalid refresh token" })

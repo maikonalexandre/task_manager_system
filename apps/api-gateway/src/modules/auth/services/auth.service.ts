@@ -2,7 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { UserLoginProps, UserRegisterProps } from "@repo/shared";
 import { firstValueFrom } from "rxjs";
-import { EnvService } from "src/env/env.service";
+import { EnvService } from "src/config/env/env.service";
 
 @Injectable()
 export class AuthService {

@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
-import { JwtVerifyGuard } from "src/validation/jwt.guard";
+import { JwtVerifyGuard } from "src/common/jwt.guard";
 
 @Controller("/")
 export class AuthController {

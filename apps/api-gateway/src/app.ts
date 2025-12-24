@@ -1,6 +1,6 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { AxiosErrorInterceptor } from "./common/axios-error.interceptor";
 import { setupSwagger } from "./config/swagger";
-import { AxiosErrorInterceptor } from "./interceptors/axios-error.interceptor";
 
 export function setupApp(app: INestApplication) {
 	setupSwagger(app);
