@@ -18,7 +18,13 @@ export class UserTypeOrmRepository {
 	}
 
 	async findByEmail(email: string) {
-		const user = await this.repo.findOne({ where: [{ email: email }] });
+		const user = await this.repo.findOne({ where: [{ email }] });
+		if (!user) return null;
+		return user;
+	}
+
+	async findByUsername(username: string) {
+		const user = await this.repo.findOne({ where: [{ username }] });
 		if (!user) return null;
 		return user;
 	}

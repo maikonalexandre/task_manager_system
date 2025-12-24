@@ -47,10 +47,14 @@ export class AuthService {
 
 		const token = this.jwtAuthService.createAccessToken({
 			sub: user.id,
+			email: user.email,
+			username: user.username,
 		});
 
 		const refreshToken = this.jwtAuthService.createRefreshToken({
 			sub: user.id,
+			email: user.email,
+			username: user.username,
 		});
 
 		return {
@@ -68,17 +72,16 @@ export class AuthService {
 
 		const token = this.jwtAuthService.createAccessToken({
 			sub: user.id,
+			email: user.email,
+			username: user.username,
 		});
 
 		const refreshToken = this.jwtAuthService.createRefreshToken({
 			sub: user.id,
+			email: user.email,
+			username: user.username,
 		});
 
-		return {
-			username: user.username,
-			email: user.email,
-			token,
-			refresh_token: refreshToken,
-		};
+		return { token, refresh_token: refreshToken };
 	}
 }

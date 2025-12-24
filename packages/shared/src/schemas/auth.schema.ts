@@ -17,6 +17,8 @@ export type UserRegisterProps = z.infer<typeof userRegisterSchema>;
 
 export const tokenPayloadSchema = z.object({
 	sub: z.uuid(),
+	username: z.string(),
+	email: z.email(),
 });
 
 export type UserTokenPayload = z.infer<typeof tokenPayloadSchema>;
