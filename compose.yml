@@ -29,9 +29,39 @@ services:
       - ./packages:/app/packages
       - /app/node_modules
       - /app/apps/api-gateway/node_modules
+    env_file:
+      - ./apps/api-gateway/.env
     environment:
       - NODE_ENV=development
       - PORT=3001
+      - AUTH_SERVICE_API_URL=http://auth-service:3002
+    depends_on:
+      db:
+        condition: service_started
+      # rabbitmq:
+      #   condition: service_started
+    networks:
+      - challenge-network
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: ./apps/auth-service/Dockerfile
+      target: development
+    ports:
+      - '3002:3002'
+    volumes:
+      - .:/app
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/auth-service/node_modules
+    env_file:
+      - ./apps/auth-service/.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - DB_HOST=db
     depends_on:
       db:
         condition: service_started

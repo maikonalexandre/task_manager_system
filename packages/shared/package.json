@@ -4,18 +4,22 @@
 	"private": true,
 	"license": "UNLICENSED",
 	"scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
-  },
+		"build": "tsc",
+		"dev": "tsc --watch"
+	},
+
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
 	"exports": {
-	".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
 	},
 	"publishConfig": {
 		"access": "public"
+	},
+	"devDependencies": {
+		"@repo/tsconfig": "*"
 	}
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Headers, Post } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiConflictResponse,
@@ -10,7 +10,6 @@ import {
 import { AuthService } from "../../services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
-import { JwtVerifyGuard } from "src/validation/jwt.guard";
 
 @Controller("/auth")
 export class AuthController {
@@ -35,6 +34,8 @@ export class AuthController {
 	}
 
 	@Post("/refresh")
+	@ApiOperation({ summary: "Generate a new auth token" })
+	@ApiOkResponse({ description: "New auth token generated" })
 	@ApiUnauthorizedResponse({ description: "Invalid refresh token" })
 	refresh(@Headers("x-refresh-token") header: string) {
 		return this.auth.refresh(header);
