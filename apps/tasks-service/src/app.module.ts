@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { LoggerModule } from "nestjs-pino";
-import { envSchema } from "./infra/env/env";
-import { EnvModule } from "./infra/env/env.module";
-import { HttpModule } from "./infra/http/http.module";
+import { envSchema } from "./config/env/env";
+import { EnvModule } from "./config/env/env.module";
+import { TaskModule } from "./modules/tasks/task.module";
 
 @Module({
 	imports: [
@@ -13,7 +13,7 @@ import { HttpModule } from "./infra/http/http.module";
 		}),
 		LoggerModule.forRoot({ pinoHttp: {} }),
 		EnvModule,
-		HttpModule,
+		TaskModule,
 	],
 })
 export class AppModule {}

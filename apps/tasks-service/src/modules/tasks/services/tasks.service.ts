@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTaskProps } from "@repo/shared";
-import { TaskTypeOrmRepository } from "../../infra/database/typeorm/repositories/task.reposirory";
+import { TaskTypeOrmRepository } from "../repositories/task.repository";
 
 @Injectable()
 export class TasksService {

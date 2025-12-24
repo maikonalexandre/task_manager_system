@@ -2,8 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EnvModule } from "../env/env.module";
 import { EnvService } from "../env/env.service";
-import { TaskEntity } from "./typeorm/entities/task.entity";
-import { TaskTypeOrmRepository } from "./typeorm/repositories/task.reposirory";
 
 @Module({
 	imports: [
@@ -24,10 +22,6 @@ import { TaskTypeOrmRepository } from "./typeorm/repositories/task.reposirory";
 				};
 			},
 		}),
-		TypeOrmModule.forFeature([TaskEntity]),
 	],
-
-	providers: [TaskTypeOrmRepository],
-	exports: [TaskTypeOrmRepository],
 })
 export class DatabaseModule {}

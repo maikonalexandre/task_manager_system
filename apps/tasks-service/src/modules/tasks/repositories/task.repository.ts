@@ -1,18 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { CreateTaskProps } from "@repo/shared";
 import { Repository } from "typeorm";
-import { Task } from "../../../../domain/entities/task.entity";
-import { TasksRepository } from "../../../../domain/repositories/task.repository";
 import { TaskEntity } from "../entities/task.entity";
 
 @Injectable()
-export class TaskTypeOrmRepository implements TasksRepository {
+export class TaskTypeOrmRepository {
 	constructor(
 		@InjectRepository(TaskEntity)
 		private readonly repo: Repository<TaskEntity>,
 	) {}
 
-	async save(task: Omit<Task, "id">) {
+	async save(task: CreateTaskProps) {
 		await this.repo.save({
 			title: task.title,
 			description: task.description,
