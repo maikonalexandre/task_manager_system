@@ -12,12 +12,6 @@ export class TaskTypeOrmRepository {
 	) {}
 
 	async save(task: CreateTaskProps) {
-		await this.repo.save({
-			title: task.title,
-			description: task.description,
-			priority: task.priority,
-			deadline: task.deadline,
-			status: task.status,
-		});
+		await this.repo.save(task);
 	}
 }

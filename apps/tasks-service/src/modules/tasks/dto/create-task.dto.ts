@@ -1,5 +1,13 @@
 import { CreateTaskProps, TaskPriority, TaskStatus } from "@repo/shared";
-import { IsDate, IsEnum, IsString, MinLength } from "class-validator";
+import {
+	IsArray,
+	IsDate,
+	IsEnum,
+	IsOptional,
+	IsString,
+	IsUUID,
+	MinLength,
+} from "class-validator";
 
 export class CreateTaskDto implements CreateTaskProps {
 	@IsString()
@@ -18,4 +26,9 @@ export class CreateTaskDto implements CreateTaskProps {
 
 	@IsEnum(TaskStatus)
 	status!: TaskStatus;
+
+	@IsArray()
+	@IsUUID("4", { each: true })
+	@IsOptional()
+	assignedUserIds?: string[];
 }

@@ -35,6 +35,9 @@ export class TaskEntity {
 	})
 	status!: TaskStatus;
 
+	@Column("uuid", { array: true, default: "{}" })
+	assignedUserIds!: string[];
+
 	@CreateDateColumn()
 	createdAt!: Date;
 

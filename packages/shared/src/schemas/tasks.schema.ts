@@ -20,6 +20,7 @@ export const createTaskSchema = z.object({
 	deadline: z.date(),
 	priority: z.enum(TaskPriority),
 	status: z.enum(TaskStatus),
+	assignedUserIds: z.uuidv4().array().optional(),
 });
 
 export type CreateTaskProps = z.infer<typeof createTaskSchema>;
