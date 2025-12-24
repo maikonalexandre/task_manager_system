@@ -1,3 +1,4 @@
+import { TaskPriority, TaskStatus } from "@repo/shared";
 import {
 	Column,
 	CreateDateColumn,
@@ -20,11 +21,19 @@ export class TaskEntity {
 	@Column()
 	deadline!: Date;
 
-	@Column()
-	priority!: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+	@Column({
+		type: "enum",
+		enum: TaskPriority,
+		default: TaskPriority.LOW,
+	})
+	priority!: TaskPriority;
 
-	@Column()
-	status!: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
+	@Column({
+		type: "enum",
+		enum: TaskStatus,
+		default: TaskStatus.TODO,
+	})
+	status!: TaskStatus;
 
 	@CreateDateColumn()
 	createdAt!: Date;

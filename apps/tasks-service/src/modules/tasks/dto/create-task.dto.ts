@@ -1,4 +1,4 @@
-import { CreateTaskProps } from "@repo/shared";
+import { CreateTaskProps, TaskPriority, TaskStatus } from "@repo/shared";
 import { IsDate, IsEnum, IsString, MinLength } from "class-validator";
 
 export class CreateTaskDto implements CreateTaskProps {
@@ -13,9 +13,9 @@ export class CreateTaskDto implements CreateTaskProps {
 	@IsDate()
 	deadline!: Date;
 
-	@IsEnum(["LOW", "MEDIUM", "HIGH", "URGENT"])
-	priority!: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+	@IsEnum(TaskPriority)
+	priority!: TaskPriority;
 
-	@IsEnum(["TODO", "IN_PROGRESS", "REVIEW", "DONE"])
-	status!: "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE";
+	@IsEnum(TaskStatus)
+	status!: TaskStatus;
 }
