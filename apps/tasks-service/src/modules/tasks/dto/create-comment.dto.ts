@@ -1,10 +1,8 @@
-import { IsString, IsUUID, MinLength } from "class-validator";
+import { CreateCommentProps } from "@repo/shared";
+import { IsString, MinLength } from "class-validator";
 
-export class CreateCommentDto {
+export class CreateCommentDto implements CreateCommentProps {
 	@IsString()
 	@MinLength(3)
 	content!: string;
-
-	@IsUUID("4")
-	userId!: string;
 }

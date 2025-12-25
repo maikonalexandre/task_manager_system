@@ -8,14 +8,14 @@ import {
 	TASK_ACTIONS,
 	UpdateTaskProps,
 } from "@repo/shared";
-import { TaskHistoryRepository } from "../repositories/history.entity";
+import { TaskHistoryTypeOrmRepository } from "../repositories/history.entity";
 import { TaskTypeOrmRepository } from "../repositories/task.repository";
 
 @Injectable()
 export class TasksService {
 	constructor(
 		private taskRepository: TaskTypeOrmRepository,
-		private taskHistoryRepository: TaskHistoryRepository,
+		private taskHistoryRepository: TaskHistoryTypeOrmRepository,
 
 		@Inject(RABBITMQ_CONFIG.TASKS_CLIENT_TOKEN)
 		private readonly client: ClientProxy,
@@ -37,6 +37,8 @@ export class TasksService {
 			title: task.title,
 			timestamp: new Date(),
 		});
+
+		return task;
 	}
 
 	async delete(taskId: string, userId: string) {

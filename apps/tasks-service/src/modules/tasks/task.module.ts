@@ -9,13 +9,13 @@ import { CommentController } from "./controllers/comment.controller";
 import { HealthController } from "./controllers/health.controller";
 import { TasksController } from "./controllers/tasks.controller";
 import { CommentEntity } from "./entities/comments.entity";
+import { TaskHistoryEntity } from "./entities/history.entity";
 import { TaskEntity } from "./entities/task.entity";
 import { CommentsTypeOrmRepository } from "./repositories/comments.repository";
+import { TaskHistoryTypeOrmRepository } from "./repositories/history.entity";
 import { TaskTypeOrmRepository } from "./repositories/task.repository";
 import { CommentService } from "./services/comment.service";
 import { TasksService } from "./services/tasks.service";
-import { TaskHistoryEntity } from "./entities/history.entity";
-import { TaskHistoryRepository } from "./repositories/history.entity";
 
 @Module({
 	imports: [
@@ -47,7 +47,7 @@ import { TaskHistoryRepository } from "./repositories/history.entity";
 		CommentService,
 		TaskTypeOrmRepository,
 		CommentsTypeOrmRepository,
-		TaskHistoryRepository,
+		TaskHistoryTypeOrmRepository,
 	],
 })
 export class TaskModule {}

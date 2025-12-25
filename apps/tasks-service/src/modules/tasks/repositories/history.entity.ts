@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { TaskHistoryEntity } from "../entities/history.entity";
 
 @Injectable()
-export class TaskHistoryRepository {
+export class TaskHistoryTypeOrmRepository {
 	constructor(
 		@InjectRepository(TaskHistoryEntity)
 		private readonly repo: Repository<TaskHistoryEntity>,
