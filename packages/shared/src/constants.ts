@@ -6,4 +6,5 @@ export const RABBITMQ_CONFIG = {
 
 export const RABBITMQ_EVENTS = {
 	TASK_CREATED: "task.created",
+	TASK_UPDATED: "task.updated",
 };

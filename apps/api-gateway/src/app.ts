@@ -1,5 +1,6 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { AxiosErrorInterceptor } from "./common/axios-error.interceptor";
+import { TransformInterceptor } from "./common/transform.interceptor";
 import { setupSwagger } from "./config/swagger";
 
 export function setupApp(app: INestApplication) {
@@ -17,5 +18,8 @@ export function setupApp(app: INestApplication) {
 		}),
 	);
 
-	app.useGlobalInterceptors(new AxiosErrorInterceptor());
+	app.useGlobalInterceptors(
+		new AxiosErrorInterceptor(),
+		new TransformInterceptor(),
+	);
 }

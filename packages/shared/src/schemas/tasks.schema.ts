@@ -23,7 +23,10 @@ export const createTaskSchema = z.object({
 	assignedUserIds: z.uuidv4().array().optional(),
 });
 
+export const updateTaskSchema = createTaskSchema.partial();
+
 export type CreateTaskProps = z.infer<typeof createTaskSchema>;
+export type UpdateTaskProps = z.infer<typeof updateTaskSchema>;
 
 export enum TASK_ACTIONS {
 	CREATED = "TASK_CREATED",

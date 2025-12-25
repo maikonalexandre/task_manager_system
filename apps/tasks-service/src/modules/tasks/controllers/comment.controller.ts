@@ -11,6 +11,6 @@ export class CommentController {
 		@Param("id") taskId: string,
 		@Body() body: CreateCommentDto,
 	) {
-		await this.comment.create({ taskId, ...body });
+		return await this.comment.create({ taskId, ...body });
 	}
 }

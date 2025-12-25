@@ -1,6 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Put,
+	Query,
+} from "@nestjs/common";
 import { UserId } from "src/common/get-user-id.decorator";
 import { CreateTaskDto } from "../dto/create-task.dto";
+import { PaginationQueryDto } from "../dto/pagination-query.dto";
+import { UpdateTaskDto } from "../dto/update-task.dto";
 import { TasksService } from "../services/tasks.service";
 
 @Controller("tasks")
@@ -9,16 +20,30 @@ export class TasksController {
 
 	@Post()
 	async create(@Body() task: CreateTaskDto, @UserId() userId: string) {
-		await this.task.create(task, userId);
+		return await this.task.create(task, userId);
 	}
 
-	@Get("/:id")
-	async getTask() {
-		throw new Error("Method not implemented");
+	@Get()
+	async findAll(@Query() paginationQuery: PaginationQueryDto) {
+		return this.task.findAll(paginationQuery);
 	}
 
-	@Delete(":id/delete")
+	@Get(":id")
+	async getTask(@Param("id") taskId: string) {
+		return await this.task.get(taskId);
+	}
+
+	@Delete(":id")
 	async delete(@Param("id") taskId: string, @UserId() userId: string) {
-		await this.task.delete(taskId, userId);
+		return await this.task.delete(taskId, userId);
+	}
+
+	@Put(":id")
+	async update(
+		@Param("id") id: string,
+		@UserId() userId: string,
+		@Body() updateTaskDto: UpdateTaskDto,
+	) {
+		return this.task.update(id, userId, updateTaskDto);
 	}
 }
