@@ -1,4 +1,5 @@
 services:
+
 #----- DB ----------------------------------------
   db:
     image: postgres:17.5-alpine3.21
@@ -55,8 +56,8 @@ services:
     depends_on:
       db:
         condition: service_started
-      # rabbitmq:
-      #   condition: service_started
+      rabbitmq:
+        condition: service_started
     networks:
       - challenge-network
 
@@ -83,8 +84,37 @@ services:
     depends_on:
       db:
         condition: service_started
-      # rabbitmq:
-      #   condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - challenge-network
+
+#----- TASKS SERVICE ---------------------------------
+  tasks-service:
+    container_name: tasks-service
+    build:
+      context: .
+      dockerfile: ./apps/tasks-service/Dockerfile
+      target: development
+    ports:
+      - '3003:3003'
+    volumes:
+      - .:/app
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/tasks-service/node_modules
+    env_file:
+      - ./apps/tasks-service/.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - DB_HOST=db
+      - RABBITMQ_URL="amqp://admin:admin@rabbitmq:5672"
+    depends_on:
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
     networks:
       - challenge-network
 

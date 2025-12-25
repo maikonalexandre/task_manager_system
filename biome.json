@@ -11,10 +11,12 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "tab",
+		"includes": ["**", "!apps/web/src/routeTree.gen.ts"]
 	},
 	"linter": {
 		"enabled": true,
+		"includes": ["**", "!apps/web/src/routeTree.gen.ts"],
 		"rules": {
 			"recommended": true,
 			"style": {

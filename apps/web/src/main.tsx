@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { routeTree } from "./routeTree.gen";
+import "./index.css";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+	interface Register {
+		router: typeof router;
+	}
+}
+
+// biome-ignore lint/style/noNonNullAssertion: this is a vite config
+createRoot(document.getElementById("root")!).render(
+	<StrictMode>
+		<RouterProvider router={router} />
+	</StrictMode>,
+);
