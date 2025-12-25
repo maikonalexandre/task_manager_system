@@ -24,3 +24,22 @@ export const createTaskSchema = z.object({
 });
 
 export type CreateTaskProps = z.infer<typeof createTaskSchema>;
+
+export enum TASK_ACTIONS {
+	CREATED = "TASK_CREATED",
+	UPDATED = "TASK_UPDATED",
+	STATUS_CHANGED = "STATUS_CHANGED",
+	ASSIGNEE_ADDED = "ASSIGNEE_ADDED",
+	COMMENT_ADDED = "COMMENT_ADDED",
+	DELETED = "TASK_DELETED",
+}
+
+export const createTaskHistorySchema = z.object({
+	taskId: z.uuidv4(),
+	changedBy: z.uuidv4(),
+	action: z.enum(TASK_ACTIONS),
+	oldValue: z.any().optional(),
+	newValue: z.any().optional(),
+});
+
+export type CreateTaskHistoryProps = z.infer<typeof createTaskHistorySchema>;

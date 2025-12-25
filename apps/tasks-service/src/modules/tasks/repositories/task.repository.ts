@@ -14,4 +14,12 @@ export class TaskTypeOrmRepository {
 	async save(task: CreateTaskProps) {
 		return await this.repo.save(task);
 	}
+
+	async delete(taskId: string) {
+		return await this.repo.delete({ id: taskId });
+	}
+
+	async findById(id: string) {
+		return await this.repo.findOneBy({ id });
+	}
 }

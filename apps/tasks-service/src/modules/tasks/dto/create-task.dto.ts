@@ -15,6 +15,9 @@ export class CreateTaskDto implements CreateTaskProps {
 	@MinLength(3)
 	title!: string;
 
+	@IsUUID("4")
+	userId!: string;
+
 	@IsString()
 	@MinLength(3)
 	description!: string;
