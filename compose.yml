@@ -51,6 +51,7 @@ services:
       - NODE_ENV=development
       - PORT=3001
       - AUTH_SERVICE_API_URL=http://auth-service:3002
+      - TASKS_SERVICE_API_URL=http://tasks-service:3003
     depends_on:
       db:
         condition: service_started

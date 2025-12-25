@@ -3,8 +3,8 @@ import { AxiosErrorInterceptor } from "./common/axios-error.interceptor";
 import { setupSwagger } from "./config/swagger";
 
 export function setupApp(app: INestApplication) {
-	setupSwagger(app);
 	app.setGlobalPrefix("api");
+	setupSwagger(app);
 	app.enableCors({
 		origin: "*",
 	});
