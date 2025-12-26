@@ -1,3 +1,4 @@
+import { Button } from "@repo/ui";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/login")({
@@ -5,5 +6,9 @@ export const Route = createLazyFileRoute("/login")({
 });
 
 function RouteComponent() {
-	return <div>Hello "/login"!</div>;
+	return (
+		<div>
+			<Button>Teste</Button>
+		</div>
+	);
 }
