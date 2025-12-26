@@ -58,9 +58,10 @@ export class AuthService {
 		});
 
 		return {
+			token,
+			id: user.id,
 			username: user.username,
 			email: user.email,
-			token,
 			refresh_token: refreshToken,
 		};
 	}
@@ -82,6 +83,6 @@ export class AuthService {
 			username: user.username,
 		});
 
-		return { token, refresh_token: refreshToken };
+		return { id: user.id, token, refresh_token: refreshToken };
 	}
 }

@@ -1,0 +1,93 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+	Button,
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+	Form,
+	TextInput,
+} from "@repo/ui";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useLoginMutation } from "../../../hooks/useLoginMutation";
+import { useAuthStore } from "../../../store/use-auth-store";
+
+const FormSchema = z.object({
+	email: z.email({ error: "Email obrigatório!" }),
+	password: z
+		.string({ message: "Senha obrigatória!" })
+		.min(6, { message: "A senha precisa ter no minimo 6 digitos!" })
+		.max(16, { message: "A senha precisa ter no maximo 6 digitos!" }),
+});
+
+export const LoginPage = () => {
+	const form = useForm({
+		resolver: zodResolver(FormSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
+
+	const navigate = useNavigate();
+	const { setAuth } = useAuthStore();
+
+	const { mutate } = useLoginMutation();
+	const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
+		mutate(
+			{ email, password },
+			{
+				onSuccess: ({ data }) => {
+					setAuth(data.user, data.accessToken, data.refreshToken);
+					navigate({ to: "/tasks" });
+				},
+			},
+		);
+	};
+
+	return (
+		<Card className="max-w-md py-4">
+			<CardHeader className="flex flex-col items-center space-y-2.5">
+				<CardTitle className="text-brand-400 text-3xl font-semibold text-center">
+					Task Login
+				</CardTitle>
+				<h2 className="text-brand-500 font-bold text-sm">
+					Que bom ter voce por aqui :)
+				</h2>
+				<CardDescription className="text-center  px-8">
+					Preencha email e senha para aproveitar nossa aplicação!
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<TextInput
+							control={form.control}
+							name="email"
+							placeholder="Email"
+							label="Email"
+							required={true}
+						/>
+						<TextInput
+							control={form.control}
+							name="password"
+							placeholder="Senha"
+							label="Senha"
+							required={true}
+						/>
+
+						<Button
+							className="w-full font-semibold bg-sky-500 hover:bg-sky-600"
+							type="submit"
+						>
+							Enviar
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
+	);
+};

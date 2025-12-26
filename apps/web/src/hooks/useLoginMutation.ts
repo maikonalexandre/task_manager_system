@@ -1,0 +1,28 @@
+import type { ApiResponse, LoginData, UserLoginProps } from "@repo/shared";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "sonner";
+import { AuthService } from "../server/auth";
+
+export const useLoginMutation = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation<ApiResponse<LoginData>, Error, UserLoginProps>({
+		mutationFn: ({ email, password }) => AuthService.login({ email, password }),
+
+		onError: (e) => {
+			if (axios.isAxiosError(e)) {
+				toast.error("Ouve uma falha ao fazer login!", {
+					description: e.response?.data?.message,
+				});
+			}
+
+			console.error(e);
+			toast.error("Ouve uma falha ao fazer login!");
+		},
+
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: [""] });
+		},
+	});
+};
