@@ -2,7 +2,7 @@ import type { ApiResponse, LoginData, UserLoginProps } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
-import { AuthService } from "../server/auth";
+import { AuthService } from "../api/auth";
 
 export const useLoginMutation = () => {
 	const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const useLoginMutation = () => {
 
 		onError: (e) => {
 			if (axios.isAxiosError(e)) {
-				toast.error("Ouve uma falha ao fazer login!", {
+				return toast.error("Ouve uma falha ao fazer login!", {
 					description: e.response?.data?.message,
 				});
 			}
@@ -22,7 +22,7 @@ export const useLoginMutation = () => {
 		},
 
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: [""] });
+			await queryClient.invalidateQueries();
 		},
 	});
 };

@@ -1,38 +1,87 @@
-import axios from "axios";
+import axios, {
+	AxiosError,
+	HttpStatusCode,
+	type InternalAxiosRequestConfig,
+} from "axios";
+import { router } from "../router";
+import { useAuthStore } from "../store/use-auth-store";
 import { env } from "./env";
 
 export const api = axios.create({
 	baseURL: env.VITE_API_URL,
 });
 
-// api.interceptors.request.use(async (req) => {
-// 	const token = localStorage.getItem("token");
+api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+	config.headers["Content-Type"] = "application/json";
+	const { accessToken } = useAuthStore.getState();
 
-// 	if (token) {
-// 		req.headers = {
-// 			"Content-Type": "application/json",
-// 			Authorization: `Bearer ${token}`,
-// 			...req.headers,
-// 		};
-// 	}
+	if (accessToken) {
+		config.headers.Authorization = `Bearer ${accessToken}`;
+	}
 
-// 	return req;
-// });
+	return config;
+});
 
-// api.interceptors.response.use(
-// 	async (res) => {
-// 		return res;
-// 	},
-// 	(error) => {
-// 		if (error.response.status === 401) {
-// 			localStorage.removeItem("usuario");
-// 			localStorage.removeItem("token");
+let isRefreshing: boolean = false;
+let failedRequestsQueue: {
+	onSuccess: (accessToken: string) => void;
+	onFailed: (error: AxiosError) => void;
+}[] = [];
 
-// 			if (typeof window !== "undefined") {
-// 				window.location.href = "/login";
-// 			}
-// 		}
+api.interceptors.response.use(
+	async (res) => res,
+	async (error: AxiosError) => {
+		if (error.response?.status === HttpStatusCode.Unauthorized) {
+			const currentErrorConfig = error.config;
 
-// 		return new Promise((_, reject) => reject(error));
-// 	},
-// );
+			if (currentErrorConfig?.url === "/auth/refresh") {
+				useAuthStore.getState().logout();
+				router.navigate({ to: "/login" });
+				return Promise.reject(error);
+			}
+
+			if (!isRefreshing) {
+				isRefreshing = true;
+				const { refreshToken } = useAuthStore.getState();
+				const requestHeaders = { headers: { "x-refresh-token": refreshToken } };
+
+				try {
+					const { data } = await api.post("/auth/refresh", {}, requestHeaders);
+
+					useAuthStore.setState({
+						isAuthenticated: true,
+						accessToken: data.access_token,
+						refreshToken: data.refresh_token,
+						user: data.user,
+					});
+
+					failedRequestsQueue.forEach((req) => {
+						req.onSuccess(data.access_token);
+					});
+
+					failedRequestsQueue = [];
+					isRefreshing = false;
+				} catch (_) {
+					useAuthStore.getState().logout();
+					router.navigate({ to: "/login" });
+
+					failedRequestsQueue.forEach((request) => {
+						request.onFailed(error);
+					});
+					failedRequestsQueue = [];
+					isRefreshing = false;
+				}
+			}
+
+			return new Promise((resolve, reject) => {
+				failedRequestsQueue.push({
+					onSuccess: (_: string) =>
+						currentErrorConfig && resolve(api(currentErrorConfig)),
+					onFailed: (error: AxiosError) => reject(error),
+				});
+			});
+		}
+
+		return Promise.reject(error);
+	},
+);

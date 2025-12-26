@@ -1,11 +1,14 @@
+import type { User } from "@repo/shared";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface User {
-	id: string;
-	email: string;
-	username: string;
+interface setUserProps {
+	user: User;
+	accessToken: string;
+	refreshToken: string;
 }
+
+type revalidateTokenProps = Omit<setUserProps, "user">;
 
 interface AuthState {
 	user: User | null;
@@ -13,37 +16,43 @@ interface AuthState {
 	refreshToken: string | null;
 	isAuthenticated: boolean;
 
-	setAuth: (user: User, accessToken: string, refreshToken: string) => void;
+	login: (props: setUserProps) => void;
 	logout: () => void;
-	updateToken: (accessToken: string) => void;
+	revalidateToken: (props: revalidateTokenProps) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
 	persist(
-		(set) => ({
-			user: null,
-			accessToken: null,
-			refreshToken: null,
-			isAuthenticated: false,
+		(set) => {
+			return {
+				user: null,
+				accessToken: null,
+				refreshToken: null,
+				isAuthenticated: false,
 
-			setAuth: (user, accessToken, refreshToken) =>
-				set({
-					user,
-					accessToken,
-					refreshToken,
-					isAuthenticated: true,
-				}),
+				login: ({ accessToken, refreshToken, user }) => {
+					return set({
+						user,
+						accessToken,
+						refreshToken,
+						isAuthenticated: true,
+					});
+				},
 
-			logout: () =>
-				set({
-					user: null,
-					accessToken: null,
-					refreshToken: null,
-					isAuthenticated: false,
-				}),
+				logout: () => {
+					return set({
+						user: null,
+						accessToken: null,
+						refreshToken: null,
+						isAuthenticated: false,
+					});
+				},
 
-			updateToken: (accessToken: string) => set({ accessToken }),
-		}),
+				revalidateToken: ({ accessToken, refreshToken }) => {
+					return set({ accessToken, refreshToken });
+				},
+			};
+		},
 
 		{
 			name: "task_challenge_auth_state",

@@ -12,6 +12,6 @@ export interface User {
 
 export interface LoginData {
 	user: User;
-	accessToken: string;
-	refreshToken: string;
+	access_token: string;
+	refresh_token: string;
 }

@@ -45,7 +45,7 @@ export class AuthService {
 
 		if (!passwordMatch) throw new UnauthorizedException("invalid credentials");
 
-		const token = this.jwtAuthService.createAccessToken({
+		const accessToken = this.jwtAuthService.createAccessToken({
 			sub: user.id,
 			email: user.email,
 			username: user.username,
@@ -58,10 +58,8 @@ export class AuthService {
 		});
 
 		return {
-			token,
-			id: user.id,
-			username: user.username,
-			email: user.email,
+			user: { id: user.id, email: user.email, username: user.username },
+			access_token: accessToken,
 			refresh_token: refreshToken,
 		};
 	}
@@ -71,7 +69,7 @@ export class AuthService {
 
 		if (!user) throw new UnauthorizedException("user not found");
 
-		const token = this.jwtAuthService.createAccessToken({
+		const accessToken = this.jwtAuthService.createAccessToken({
 			sub: user.id,
 			email: user.email,
 			username: user.username,
@@ -83,6 +81,10 @@ export class AuthService {
 			username: user.username,
 		});
 
-		return { id: user.id, token, refresh_token: refreshToken };
+		return {
+			user: { id: user.id, email: user.email, username: user.username },
+			access_token: accessToken,
+			refresh_token: refreshToken,
+		};
 	}
 }

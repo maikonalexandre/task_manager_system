@@ -33,15 +33,21 @@ export const LoginPage = () => {
 	});
 
 	const navigate = useNavigate();
-	const { setAuth } = useAuthStore();
-
+	const { login } = useAuthStore();
 	const { mutate } = useLoginMutation();
+
 	const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
 		mutate(
 			{ email, password },
 			{
 				onSuccess: ({ data }) => {
-					setAuth(data.user, data.accessToken, data.refreshToken);
+					console.log("data", data);
+					login({
+						accessToken: data.access_token,
+						refreshToken: data.refresh_token,
+						user: data.user,
+					});
+
 					navigate({ to: "/tasks" });
 				},
 			},

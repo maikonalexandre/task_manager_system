@@ -10,17 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
-import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as PrivateRouteRouteImport } from './routes/_private/route'
 import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
-import { Route as AuthTasksIndexRouteImport } from './routes/_auth/tasks/index'
+import { Route as PrivateTasksIndexRouteImport } from './routes/_private/tasks/index'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/_auth',
+const PrivateRouteRoute = PrivateRouteRouteImport.update({
+  id: '/_private',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublicRegisterRoute = PublicRegisterRouteImport.update({
@@ -33,29 +33,29 @@ const PublicLoginRoute = PublicLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PublicRouteRoute,
 } as any)
-const AuthTasksIndexRoute = AuthTasksIndexRouteImport.update({
+const PrivateTasksIndexRoute = PrivateTasksIndexRouteImport.update({
   id: '/tasks/',
   path: '/tasks/',
-  getParentRoute: () => AuthRouteRoute,
+  getParentRoute: () => PrivateRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
-  '/tasks': typeof AuthTasksIndexRoute
+  '/tasks': typeof PrivateTasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
-  '/tasks': typeof AuthTasksIndexRoute
+  '/tasks': typeof PrivateTasksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_auth': typeof AuthRouteRouteWithChildren
+  '/_private': typeof PrivateRouteRouteWithChildren
   '/_public': typeof PublicRouteRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
-  '/_auth/tasks/': typeof AuthTasksIndexRoute
+  '/_private/tasks/': typeof PrivateTasksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -64,15 +64,15 @@ export interface FileRouteTypes {
   to: '/login' | '/register' | '/tasks'
   id:
     | '__root__'
-    | '/_auth'
+    | '/_private'
     | '/_public'
     | '/_public/login'
     | '/_public/register'
-    | '/_auth/tasks/'
+    | '/_private/tasks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  PrivateRouteRoute: typeof PrivateRouteRouteWithChildren
   PublicRouteRoute: typeof PublicRouteRouteWithChildren
 }
 
@@ -85,11 +85,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth': {
-      id: '/_auth'
+    '/_private': {
+      id: '/_private'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthRouteRouteImport
+      preLoaderRoute: typeof PrivateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_public/register': {
@@ -106,26 +106,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginRouteImport
       parentRoute: typeof PublicRouteRoute
     }
-    '/_auth/tasks/': {
-      id: '/_auth/tasks/'
+    '/_private/tasks/': {
+      id: '/_private/tasks/'
       path: '/tasks'
       fullPath: '/tasks'
-      preLoaderRoute: typeof AuthTasksIndexRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof PrivateTasksIndexRouteImport
+      parentRoute: typeof PrivateRouteRoute
     }
   }
 }
 
-interface AuthRouteRouteChildren {
-  AuthTasksIndexRoute: typeof AuthTasksIndexRoute
+interface PrivateRouteRouteChildren {
+  PrivateTasksIndexRoute: typeof PrivateTasksIndexRoute
 }
 
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthTasksIndexRoute: AuthTasksIndexRoute,
+const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
+  PrivateTasksIndexRoute: PrivateTasksIndexRoute,
 }
 
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
+const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
+  PrivateRouteRouteChildren,
 )
 
 interface PublicRouteRouteChildren {
@@ -143,7 +143,7 @@ const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthRouteRoute: AuthRouteRouteWithChildren,
+  PrivateRouteRoute: PrivateRouteRouteWithChildren,
   PublicRouteRoute: PublicRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
