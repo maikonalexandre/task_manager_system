@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {},
 	"exports": {
-		".": "./src/index.tsx",
+		".": "./src/index.ts",
 		"./index.css": "./src/index.css"
 	},
 	"dependencies": {
