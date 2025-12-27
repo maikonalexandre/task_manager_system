@@ -2,7 +2,7 @@ import type { ApiResponse, UserRegisterProps } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
-import { AuthService } from "../api/auth";
+import { AuthService } from "../api";
 
 export const useRegisterMutation = () => {
 	const queryClient = useQueryClient();
@@ -23,7 +23,7 @@ export const useRegisterMutation = () => {
 		},
 
 		onSuccess: async () => {
-			await queryClient.invalidateQueries();
+			queryClient.clear();
 		},
 	});
 };

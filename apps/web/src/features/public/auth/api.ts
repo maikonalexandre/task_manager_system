@@ -1,5 +1,5 @@
 import type { UserLoginProps, UserRegisterProps } from "@repo/shared";
-import { api } from "../config/api";
+import { api } from "../../../config/api";
 
 const login = async (body: UserLoginProps) => {
 	const { data } = await api.post("/auth/login", body);

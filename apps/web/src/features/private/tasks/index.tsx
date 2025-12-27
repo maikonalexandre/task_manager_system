@@ -1,17 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { TasksService } from "../../../api/tasks";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getAllTasksQueryConfig } from "./query";
 
 export const TasksListPage = () => {
-	const { data } = useQuery({
-		queryFn: TasksService.getAll,
-		queryKey: [""],
-	});
-
-	console.log("TASKS", data);
+	const { data } = useSuspenseQuery(getAllTasksQueryConfig());
 
 	return (
 		<div>
-			<div>Tasks list page</div>
+			<div>{JSON.stringify(data)}</div>
 		</div>
 	);
 };
