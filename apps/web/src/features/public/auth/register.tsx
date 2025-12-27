@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type UserRegisterProps, userRegisterSchema } from "@repo/shared";
 import {
 	Button,
 	Card,
@@ -12,35 +13,22 @@ import {
 } from "@repo/ui";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useRegisterMutation } from "./hooks/useRegisterMutation";
-
-const FormSchema = z.object({
-	username: z.string({ error: "Username obrigatório" }),
-	email: z.email({ error: "Email obrigatório!" }),
-	password: z
-		.string({ message: "Senha obrigatória!" })
-		.min(6, { message: "A senha precisa ter no minimo 6 digitos!" })
-		.max(16, { message: "A senha precisa ter no maximo 6 digitos!" }),
-});
 
 export const RegisterPage = () => {
 	const form = useForm({
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(userRegisterSchema),
 		defaultValues: {
 			email: "",
 			password: "",
+			username: "",
 		},
 	});
 
 	const navigate = useNavigate();
 	const { mutate } = useRegisterMutation();
 
-	const onSubmit = async ({
-		email,
-		password,
-		username,
-	}: z.infer<typeof FormSchema>) => {
+	const onSubmit = async ({ email, password, username }: UserRegisterProps) => {
 		mutate(
 			{ email, password, username },
 			{ onSuccess: () => navigate({ href: "/login" }) },

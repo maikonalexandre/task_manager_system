@@ -1,4 +1,4 @@
-import type { ApiResponse, Metadada, Task } from "@repo/shared";
+import type { ApiResponse, PaginationProps, Task } from "@repo/shared";
 import {
 	queryOptions,
 	type UseSuspenseQueryOptions,
@@ -8,7 +8,7 @@ import { getTasksQueryKey } from "./key";
 
 interface GetAllTasksQueryResponse {
 	tasks: Task[];
-	meta: Metadada;
+	meta: PaginationProps;
 }
 
 export const getAllTasksQueryConfig = ({

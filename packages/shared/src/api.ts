@@ -4,7 +4,7 @@ export interface ApiResponse<T> {
 	timestamp: string;
 }
 
-export interface Metadada {
+export interface PaginationProps {
 	current_page: number;
 	item_count: number;
 	items_per_page: number;

@@ -1,4 +1,11 @@
-import { Body, Controller, Headers, Post } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Headers,
+	HttpCode,
+	HttpStatus,
+	Post,
+} from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiConflictResponse,
@@ -25,6 +32,7 @@ export class AuthController {
 	}
 
 	@Post("login")
+	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: "Login with user and password" })
 	@ApiOkResponse({ description: "Successful login" })
 	@ApiBadRequestResponse({ description: "Invalid data" })
@@ -34,6 +42,7 @@ export class AuthController {
 	}
 
 	@Post("refresh")
+	@HttpCode(HttpStatus.OK)
 	@ApiOperation({ summary: "Generate a new auth token" })
 	@ApiOkResponse({ description: "New auth token generated" })
 	@ApiUnauthorizedResponse({ description: "Invalid refresh token" })

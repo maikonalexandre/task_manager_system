@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type UserLoginProps, userLoginSchema } from "@repo/shared";
 import {
 	Button,
 	Card,
@@ -12,21 +13,12 @@ import {
 } from "@repo/ui";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useAuthStore } from "../../../store/use-auth-store";
 import { useLoginMutation } from "./hooks/useLoginMutation";
 
-const FormSchema = z.object({
-	email: z.email({ error: "Email obrigatório!" }),
-	password: z
-		.string({ message: "Senha obrigatória!" })
-		.min(6, { message: "A senha precisa ter no minimo 6 digitos!" })
-		.max(16, { message: "A senha precisa ter no maximo 6 digitos!" }),
-});
-
 export const LoginPage = () => {
 	const form = useForm({
-		resolver: zodResolver(FormSchema),
+		resolver: zodResolver(userLoginSchema),
 		defaultValues: {
 			email: "",
 			password: "",
@@ -37,7 +29,7 @@ export const LoginPage = () => {
 	const { login } = useAuthStore();
 	const { mutate } = useLoginMutation();
 
-	const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
+	const onSubmit = async ({ email, password }: UserLoginProps) => {
 		mutate(
 			{ email, password },
 			{

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { mapEnumToOptions } from "../utils/index";
 
 export enum TaskPriority {
 	LOW = "LOW",
@@ -22,6 +23,9 @@ export enum TASK_ACTIONS {
 	COMMENT_ADDED = "COMMENT_ADDED",
 	DELETED = "TASK_DELETED",
 }
+
+export const taskPriorityOptions = mapEnumToOptions(TaskPriority);
+export const taskStatusOptions = mapEnumToOptions(TaskStatus);
 
 export const createTaskSchema = z.object({
 	title: z.string().min(3),

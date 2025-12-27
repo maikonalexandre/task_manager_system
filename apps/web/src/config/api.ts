@@ -34,11 +34,14 @@ api.interceptors.response.use(
 		if (error.response?.status === HttpStatusCode.Unauthorized) {
 			const currentErrorConfig = error.config;
 
-			if (currentErrorConfig?.url === "/auth/refresh") {
-				useAuthStore.getState().logout();
-				router.navigate({ to: "/login" });
-				return Promise.reject(error);
-			}
+			// We made a promise that we will call the request after refresh
+			const retryRequest = new Promise((resolve, reject) => {
+				failedRequestsQueue.push({
+					onSuccess: () =>
+						currentErrorConfig && resolve(api(currentErrorConfig)),
+					onFailed: (error) => reject(error),
+				});
+			});
 
 			if (!isRefreshing) {
 				isRefreshing = true;
@@ -50,9 +53,9 @@ api.interceptors.response.use(
 
 					useAuthStore.setState({
 						isAuthenticated: true,
-						accessToken: data.access_token,
-						refreshToken: data.refresh_token,
-						user: data.user,
+						accessToken: data.data.access_token,
+						refreshToken: data.data.refresh_token,
+						user: data.data.user,
 					});
 
 					failedRequestsQueue.forEach((req) => {
@@ -68,18 +71,13 @@ api.interceptors.response.use(
 					failedRequestsQueue.forEach((request) => {
 						request.onFailed(error);
 					});
+
 					failedRequestsQueue = [];
 					isRefreshing = false;
 				}
 			}
 
-			return new Promise((resolve, reject) => {
-				failedRequestsQueue.push({
-					onSuccess: (_: string) =>
-						currentErrorConfig && resolve(api(currentErrorConfig)),
-					onFailed: (error: AxiosError) => reject(error),
-				});
-			});
+			return retryRequest;
 		}
 
 		return Promise.reject(error);

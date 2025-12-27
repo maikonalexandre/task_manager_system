@@ -1,14 +1,20 @@
 import { z } from "zod";
 
 export const userLoginSchema = z.object({
-	email: z.email(),
-	password: z.string().min(6).max(16),
+	email: z.email({ error: "Email obrigatório!" }),
+	password: z
+		.string({ message: "Senha obrigatória!" })
+		.min(6, { message: "A senha precisa ter no minimo 6 digitos!" })
+		.max(16, { message: "A senha precisa ter no maximo 6 digitos!" }),
 });
 
 export const userRegisterSchema = z.object({
-	email: z.email(),
-	username: z.string().min(3),
-	password: z.string().min(6).max(16),
+	username: z.string({ error: "Username obrigatório" }).min(3),
+	email: z.email({ error: "Email obrigatório!" }),
+	password: z
+		.string({ message: "Senha obrigatória!" })
+		.min(6, { message: "A senha precisa ter no minimo 6 digitos!" })
+		.max(16, { message: "A senha precisa ter no maximo 6 digitos!" }),
 });
 
 export const tokenPayloadSchema = z.object({
@@ -27,6 +33,8 @@ export type UserLoginProps = z.infer<typeof userLoginSchema>;
 export type UserTokenPayload = z.infer<typeof tokenPayloadSchema>;
 export type UserRegisterProps = z.infer<typeof userRegisterSchema>;
 
-export interface User extends UserLoginProps {
+export interface User {
 	id: string;
+	email: string;
+	username: string;
 }

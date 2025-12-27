@@ -14,6 +14,7 @@ import { Route as PrivateRouteRouteImport } from './routes/_private/route'
 import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PrivateTasksIndexRouteImport } from './routes/_private/_tasks/index'
+import { Route as PrivateTasksTasksTaskIdRouteImport } from './routes/_private/_tasks/tasks/$taskId'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
@@ -38,16 +39,23 @@ const PrivateTasksIndexRoute = PrivateTasksIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PrivateRouteRoute,
 } as any)
+const PrivateTasksTasksTaskIdRoute = PrivateTasksTasksTaskIdRouteImport.update({
+  id: '/_tasks/tasks/$taskId',
+  path: '/tasks/$taskId',
+  getParentRoute: () => PrivateRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
   '/': typeof PrivateTasksIndexRoute
+  '/tasks/$taskId': typeof PrivateTasksTasksTaskIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
   '/': typeof PrivateTasksIndexRoute
+  '/tasks/$taskId': typeof PrivateTasksTasksTaskIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -56,12 +64,13 @@ export interface FileRoutesById {
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
   '/_private/_tasks/': typeof PrivateTasksIndexRoute
+  '/_private/_tasks/tasks/$taskId': typeof PrivateTasksTasksTaskIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/'
+  fullPaths: '/login' | '/register' | '/' | '/tasks/$taskId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/'
+  to: '/login' | '/register' | '/' | '/tasks/$taskId'
   id:
     | '__root__'
     | '/_private'
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
     | '/_public/login'
     | '/_public/register'
     | '/_private/_tasks/'
+    | '/_private/_tasks/tasks/$taskId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -113,15 +123,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateTasksIndexRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
+    '/_private/_tasks/tasks/$taskId': {
+      id: '/_private/_tasks/tasks/$taskId'
+      path: '/tasks/$taskId'
+      fullPath: '/tasks/$taskId'
+      preLoaderRoute: typeof PrivateTasksTasksTaskIdRouteImport
+      parentRoute: typeof PrivateRouteRoute
+    }
   }
 }
 
 interface PrivateRouteRouteChildren {
   PrivateTasksIndexRoute: typeof PrivateTasksIndexRoute
+  PrivateTasksTasksTaskIdRoute: typeof PrivateTasksTasksTaskIdRoute
 }
 
 const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
   PrivateTasksIndexRoute: PrivateTasksIndexRoute,
+  PrivateTasksTasksTaskIdRoute: PrivateTasksTasksTaskIdRoute,
 }
 
 const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
