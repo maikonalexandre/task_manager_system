@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { Header } from "../../components/header";
 import { router } from "../../router";
 
 export const Route = createFileRoute("/_private")({
@@ -12,8 +13,9 @@ export const Route = createFileRoute("/_private")({
 
 function AuthLayout() {
 	return (
-		<div>
-			<h1>Layout</h1>
+		<div className="max-w-5xl m-auto">
+			<Header />
+			<div className="p-2" />
 			<Outlet />
 		</div>
 	);

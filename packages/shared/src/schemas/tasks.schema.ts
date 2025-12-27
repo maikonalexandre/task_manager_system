@@ -14,20 +14,6 @@ export enum TaskStatus {
 	DONE = "DONE",
 }
 
-export const createTaskSchema = z.object({
-	title: z.string().min(3),
-	description: z.string(),
-	deadline: z.date(),
-	priority: z.enum(TaskPriority),
-	status: z.enum(TaskStatus),
-	assignedUserIds: z.uuidv4().array().optional(),
-});
-
-export const updateTaskSchema = createTaskSchema.partial();
-
-export type CreateTaskProps = z.infer<typeof createTaskSchema>;
-export type UpdateTaskProps = z.infer<typeof updateTaskSchema>;
-
 export enum TASK_ACTIONS {
 	CREATED = "TASK_CREATED",
 	UPDATED = "TASK_UPDATED",
@@ -37,6 +23,15 @@ export enum TASK_ACTIONS {
 	DELETED = "TASK_DELETED",
 }
 
+export const createTaskSchema = z.object({
+	title: z.string().min(3),
+	description: z.string(),
+	deadline: z.date(),
+	priority: z.enum(TaskPriority),
+	status: z.enum(TaskStatus),
+	assignedUserIds: z.uuidv4().array().optional(),
+});
+
 export const createTaskHistorySchema = z.object({
 	taskId: z.uuidv4(),
 	changedBy: z.uuidv4(),
@@ -44,5 +39,17 @@ export const createTaskHistorySchema = z.object({
 	oldValue: z.any().optional(),
 	newValue: z.any().optional(),
 });
+
+export const taskSchema = createTaskSchema.extend({
+	id: z.uuidv4(),
+	createdAt: z.date(),
+	updatedAt: z.date(),
+});
+
+export const updateTaskSchema = createTaskSchema.partial();
+
+export type CreateTaskProps = z.infer<typeof createTaskSchema>;
+export type UpdateTaskProps = z.infer<typeof updateTaskSchema>;
+export type Task = z.infer<typeof taskSchema>;
 
 export type CreateTaskHistoryProps = z.infer<typeof createTaskHistorySchema>;

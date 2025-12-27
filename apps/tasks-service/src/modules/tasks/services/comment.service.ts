@@ -65,11 +65,11 @@ export class CommentService {
 		return {
 			comments,
 			meta: {
-				totalItems: count,
-				itemCount: comments.length,
-				itemsPerPage: size,
-				totalPages: Math.ceil(count / size),
-				currentPage: page,
+				total_items: count,
+				item_count: comments.length,
+				items_per_page: size,
+				total_pages: Math.ceil(count / size),
+				current_page: page,
 			},
 		};
 	}

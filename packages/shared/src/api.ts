@@ -4,14 +4,10 @@ export interface ApiResponse<T> {
 	timestamp: string;
 }
 
-export interface User {
-	id: string;
-	email: string;
-	username: string;
-}
-
-export interface LoginData {
-	user: User;
-	access_token: string;
-	refresh_token: string;
+export interface Metadada {
+	current_page: number;
+	item_count: number;
+	items_per_page: number;
+	total_items: number;
+	total_pages: number;
 }

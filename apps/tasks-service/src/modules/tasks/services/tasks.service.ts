@@ -75,11 +75,11 @@ export class TasksService {
 		return {
 			tasks,
 			meta: {
-				totalItems: count,
-				itemCount: tasks.length,
-				itemsPerPage: size,
-				totalPages: Math.ceil(count / size),
-				currentPage: page,
+				total_items: count,
+				item_count: tasks.length,
+				items_per_page: size,
+				total_pages: Math.ceil(count / size),
+				current_page: page,
 			},
 		};
 	}

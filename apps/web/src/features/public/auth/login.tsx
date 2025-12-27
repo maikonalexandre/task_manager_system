@@ -57,8 +57,8 @@ export const LoginPage = () => {
 	return (
 		<Card className="max-w-md min-w-[20rem] py-4">
 			<CardHeader className="flex flex-col items-center space-y-2.5">
-				<CardTitle className="text-3xl font-bold text-center">
-					. Tasks
+				<CardTitle className="text-3xl font-bold text-center text-fuchsia-600">
+					Tasks
 				</CardTitle>
 				<h2 className="font-semibold text-sm">Que bom ter voce por aqui :)</h2>
 				<CardDescription className="text-center px-8">

@@ -1,3 +1,4 @@
+import type { ApiResponse, Metadada, Task } from "@repo/shared";
 import {
 	queryOptions,
 	type UseSuspenseQueryOptions,
@@ -5,10 +6,17 @@ import {
 import { TasksService } from "./api";
 import { getTasksQueryKey } from "./key";
 
+interface GetAllTasksQueryResponse {
+	tasks: Task[];
+	meta: Metadada;
+}
+
 export const getAllTasksQueryConfig = ({
 	options,
 }: {
-	options?: Partial<UseSuspenseQueryOptions>;
+	options?: Partial<
+		UseSuspenseQueryOptions<ApiResponse<GetAllTasksQueryResponse>>
+	>;
 } = {}) => {
 	return queryOptions({
 		queryKey: getTasksQueryKey.all,
