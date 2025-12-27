@@ -4,12 +4,13 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
 	Form,
 	TextInput,
 } from "@repo/ui";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useLoginMutation } from "../../../hooks/useLoginMutation";
@@ -41,29 +42,26 @@ export const LoginPage = () => {
 			{ email, password },
 			{
 				onSuccess: ({ data }) => {
-					console.log("data", data);
 					login({
 						accessToken: data.access_token,
 						refreshToken: data.refresh_token,
 						user: data.user,
 					});
 
-					navigate({ to: "/tasks" });
+					navigate({ to: "/" });
 				},
 			},
 		);
 	};
 
 	return (
-		<Card className="max-w-md py-4">
+		<Card className="max-w-md min-w-[20rem] py-4">
 			<CardHeader className="flex flex-col items-center space-y-2.5">
-				<CardTitle className="text-brand-400 text-3xl font-semibold text-center">
-					Task Login
+				<CardTitle className="text-3xl font-bold text-center">
+					. Tasks
 				</CardTitle>
-				<h2 className="text-brand-500 font-bold text-sm">
-					Que bom ter voce por aqui :)
-				</h2>
-				<CardDescription className="text-center  px-8">
+				<h2 className="font-semibold text-sm">Que bom ter voce por aqui :)</h2>
+				<CardDescription className="text-center px-8">
 					Preencha email e senha para aproveitar nossa aplicação!
 				</CardDescription>
 			</CardHeader>
@@ -78,6 +76,7 @@ export const LoginPage = () => {
 							required={true}
 						/>
 						<TextInput
+							type="password"
 							control={form.control}
 							name="password"
 							placeholder="Senha"
@@ -86,7 +85,7 @@ export const LoginPage = () => {
 						/>
 
 						<Button
-							className="w-full font-semibold bg-sky-500 hover:bg-sky-600"
+							className="w-full font-semibold bg-sky-500 hover:bg-sky-600 cursor-pointer"
 							type="submit"
 						>
 							Enviar
@@ -94,6 +93,11 @@ export const LoginPage = () => {
 					</form>
 				</Form>
 			</CardContent>
+			<CardFooter>
+				<Link className="text-neutral-700 text-sm underline" to="/register">
+					Cadastrar usuário
+				</Link>
+			</CardFooter>
 		</Card>
 	);
 };

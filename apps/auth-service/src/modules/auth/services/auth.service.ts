@@ -22,9 +22,13 @@ export class AuthService {
 		const userWithSameEmail = await this.usersRepository.findByEmail(
 			registerProps.email,
 		);
-
 		if (userWithSameEmail)
 			throw new ConflictException("user with same email already exists");
+
+		const userWithSameUsername =
+			await this.usersRepository.findByUsername(username);
+		if (userWithSameUsername)
+			throw new ConflictException("user with same username already exists");
 
 		const hashedPassword = await hash(password, 8);
 
