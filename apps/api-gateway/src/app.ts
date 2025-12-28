@@ -20,6 +20,6 @@ export function setupApp(app: INestApplication) {
 
 	app.useGlobalInterceptors(
 		new AxiosErrorInterceptor(),
-		new TransformInterceptor(),
+		// new TransformInterceptor(),
 	);
 }

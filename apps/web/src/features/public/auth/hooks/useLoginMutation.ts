@@ -1,4 +1,4 @@
-import type { ApiResponse, LoginData, UserLoginProps } from "@repo/shared";
+import type { LoginData, UserLoginProps } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
@@ -7,7 +7,7 @@ import { AuthService } from "../api";
 export const useLoginMutation = () => {
 	const queryClient = useQueryClient();
 
-	return useMutation<ApiResponse<LoginData>, Error, UserLoginProps>({
+	return useMutation<LoginData, Error, UserLoginProps>({
 		mutationFn: ({ email, password }) => AuthService.login({ email, password }),
 
 		onError: (e) => {

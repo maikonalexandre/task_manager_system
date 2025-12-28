@@ -53,9 +53,9 @@ api.interceptors.response.use(
 
 					useAuthStore.setState({
 						isAuthenticated: true,
-						accessToken: data.data.access_token,
-						refreshToken: data.data.refresh_token,
-						user: data.data.user,
+						accessToken: data.access_token,
+						refreshToken: data.refresh_token,
+						user: data.user,
 					});
 
 					failedRequestsQueue.forEach((req) => {

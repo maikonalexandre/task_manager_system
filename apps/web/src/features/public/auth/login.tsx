@@ -33,11 +33,11 @@ export const LoginPage = () => {
 		mutate(
 			{ email, password },
 			{
-				onSuccess: ({ data }) => {
+				onSuccess: ({ access_token, refresh_token, user }) => {
 					login({
-						accessToken: data.access_token,
-						refreshToken: data.refresh_token,
-						user: data.user,
+						accessToken: access_token,
+						refreshToken: refresh_token,
+						user: user,
 					});
 
 					navigate({ to: "/" });

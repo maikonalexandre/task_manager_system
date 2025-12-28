@@ -64,6 +64,7 @@ export const RegisterPage = () => {
 							label="Email"
 							required={true}
 						/>
+
 						<TextInput
 							type="password"
 							control={form.control}

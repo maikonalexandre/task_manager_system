@@ -15,7 +15,7 @@ function AuthLayout() {
 	return (
 		<div className="max-w-5xl m-auto">
 			<Header />
-			<div className="p-2" />
+			<div className="p-4" />
 			<Outlet />
 		</div>
 	);

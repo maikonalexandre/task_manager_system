@@ -28,9 +28,13 @@ export const taskPriorityOptions = mapEnumToOptions(TaskPriority);
 export const taskStatusOptions = mapEnumToOptions(TaskStatus);
 
 export const createTaskSchema = z.object({
-	title: z.string().min(3),
-	description: z.string(),
-	deadline: z.date(),
+	title: z
+		.string()
+		.min(3, { message: "Titulo precisa ter pelo menos 3 digitos!" }),
+	description: z
+		.string()
+		.min(3, { message: "Descrição precisa ter pelo menos 3 digitos!" }),
+	deadline: z.coerce.date(),
 	priority: z.enum(TaskPriority),
 	status: z.enum(TaskStatus),
 	assignedUserIds: z.uuidv4().array().optional(),

@@ -8,16 +8,15 @@ export const TasksListPage = () => {
 	const { data } = useSuspenseQuery(getAllTasksQueryConfig());
 
 	return (
-		<div className="px-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div className="px-4 columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:balance]">
 			{!data && <p>Task não encontrada</p>}
-			{data?.data.tasks.map((task: Task) => {
+			{data?.tasks.map((task: Task) => {
 				return (
 					<Link
 						key={task.id}
 						to="/tasks/$taskId"
-						params={{
-							taskId: task.id,
-						}}
+						params={{ taskId: task.id }}
+						className="block mb-4 break-inside-avoid"
 					>
 						<TaskCard
 							title={task.title}
