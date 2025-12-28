@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TasksListPage } from "../../../features/private/tasks";
+import { TasksPageSkeleton } from "../../../features/private/tasks/components/tasks-page-skeleton";
 import { getAllTasksQueryConfig } from "../../../features/private/tasks/query";
 
 export const Route = createFileRoute("/_private/_tasks/")({
 	component: TasksListPage,
-	pendingComponent: () => <div>Loading...</div>,
+	pendingComponent: TasksPageSkeleton,
 	loader: ({ context: { queryClient } }) => {
-		return queryClient.ensureQueryData(getAllTasksQueryConfig());
+		return queryClient.ensureInfiniteQueryData(getAllTasksQueryConfig());
 	},
 });

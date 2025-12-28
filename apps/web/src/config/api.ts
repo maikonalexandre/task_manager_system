@@ -12,6 +12,13 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+	if (
+		["dev", "test"].includes(env.VITE_ENVIRONMENT) &&
+		env.VITE_ENABLE_REQUEST_DELAY
+	) {
+		await new Promise((res, _) => setTimeout(res, 3000));
+	}
+
 	config.headers["Content-Type"] = "application/json";
 	const { accessToken } = useAuthStore.getState();
 
