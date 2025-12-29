@@ -63,8 +63,6 @@ export class NotificationService {
 	}
 
 	async updatedTask(payload: UpdateTaskEventPayload) {
-		console.log("BEING CALLED", payload.newTaskSnapshot.assignedUserIds);
-
 		if (payload.oldTaskSnapshot.status !== payload.newTaskSnapshot.status) {
 			if (payload.newTaskSnapshot.assignedUserIds) {
 				for (const user of payload.newTaskSnapshot.assignedUserIds) {

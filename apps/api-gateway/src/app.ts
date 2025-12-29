@@ -43,9 +43,7 @@ export function setupApp(app: INestApplication) {
 						});
 
 						proxyReq.setHeader("x-user-id", payload.sub);
-						console.log(`[Gateway] WS for user: ${payload.sub}`);
-					} catch (e) {
-						console.log("ERROR", e);
+					} catch (_) {
 						socket.destroy();
 					}
 				},

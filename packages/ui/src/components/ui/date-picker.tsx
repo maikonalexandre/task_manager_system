@@ -1,13 +1,26 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
-import * as React from "react";
+import type { Control, FieldValues, Path } from "react-hook-form";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-export function DatePicker({ label, control, name, required = false }) {
+interface DatePickerProps<T extends FieldValues> {
+	control: Control<T>;
+	name: Path<T>;
+	label?: string;
+	placeholder?: string;
+	required: boolean;
+}
+
+export function DatePicker<T extends FieldValues>({
+	label,
+	control,
+	name,
+	required = false,
+}: DatePickerProps<T>) {
 	return (
 		<FormField
 			control={control}
