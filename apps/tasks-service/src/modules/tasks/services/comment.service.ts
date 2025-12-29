@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import {
+	CreateCommentEventPayload,
 	CreateCommentProps,
 	PaginationQueryProps,
 	RABBITMQ_CONFIG,
@@ -32,18 +33,21 @@ export class CommentService {
 		);
 
 		await this.taskHistoryRepository.save({
+			taskId,
 			action: TASK_ACTIONS.COMMENT_ADDED,
 			changedBy: userId,
-			taskId,
 			newValue: newComment,
 			oldValue: null,
 		});
 
-		this.client.emit(RABBITMQ_EVENTS.COMMENT_CREATED, {
-			id: task.id,
-			title: task.title,
-			timestamp: new Date(),
-		});
+		this.client.emit<string, CreateCommentEventPayload>(
+			RABBITMQ_EVENTS.COMMENT_CREATED,
+			{
+				taskId: task.id,
+				task: task,
+				content: newComment.content,
+			},
+		);
 
 		return newComment;
 	}

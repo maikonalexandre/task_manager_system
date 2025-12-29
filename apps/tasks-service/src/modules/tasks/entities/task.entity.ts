@@ -28,14 +28,14 @@ export class TaskEntity {
 		enum: TaskPriority,
 		default: TaskPriority.LOW,
 	})
-	priority?: TaskPriority;
+	priority!: TaskPriority;
 
 	@Column({
 		type: "enum",
 		enum: TaskStatus,
 		default: TaskStatus.TODO,
 	})
-	status?: TaskStatus;
+	status!: TaskStatus;
 
 	@Column("uuid", { array: true, default: "{}" })
 	assignedUserIds!: string[];

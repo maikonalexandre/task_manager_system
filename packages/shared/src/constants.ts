@@ -9,3 +9,9 @@ export const RABBITMQ_EVENTS = {
 	TASK_UPDATED: "task.updated",
 	COMMENT_CREATED: "task.comment.created",
 };
+
+export const WS_EVENTS = {
+	TASK_CREATED: "task:created",
+	TASK_UPDATED: "task:updated",
+	COMMENT_CREATED: "comment:new",
+};

@@ -1,4 +1,5 @@
 import z from "zod";
+import { taskSchema } from "./tasks.schema";
 
 export const createCommentSchema = z.object({
 	content: z.string().min(3),
@@ -14,3 +15,13 @@ export const commentSchema = createCommentSchema.extend({
 
 export type CreateCommentProps = z.infer<typeof createCommentSchema>;
 export type CommentProps = z.infer<typeof commentSchema>;
+
+export const createCommentEventSchema = z.object({
+	taskId: z.uuid(),
+	content: z.string(),
+	task: taskSchema,
+});
+
+export type CreateCommentEventPayload = z.infer<
+	typeof createCommentEventSchema
+>;
