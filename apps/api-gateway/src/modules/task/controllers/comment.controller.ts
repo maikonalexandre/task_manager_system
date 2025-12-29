@@ -36,7 +36,6 @@ export class CommentController {
 		@Body() createCommentDto: CreateCommentDto,
 		@GetCurrentUserId() userId: string,
 	) {
-		console.log("Bateu aqui");
 		return await this.comment.create(taskId, userId, createCommentDto);
 	}
 

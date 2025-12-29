@@ -28,7 +28,6 @@ export const useUpdateTaskMutation = () => {
 		},
 
 		onSuccess: async () => {
-			console.log("Sendo chamado");
 			queryClient.invalidateQueries({
 				queryKey: getTasksQueryKey.all,
 			});

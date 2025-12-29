@@ -29,6 +29,11 @@ export class UserTypeOrmRepository {
 		return user;
 	}
 
+	async findAll() {
+		const [users, count] = await this.repo.findAndCount();
+		return { users, count };
+	}
+
 	async save(user: UserRegisterProps) {
 		await this.repo.save({
 			email: user.email,

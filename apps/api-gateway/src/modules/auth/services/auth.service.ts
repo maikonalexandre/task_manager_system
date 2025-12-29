@@ -37,4 +37,11 @@ export class AuthService {
 
 		return response.data;
 	}
+
+	async list() {
+		const url = `${this.authServiceUrl}/users`;
+		const response = await firstValueFrom(this.http.get(url, {}));
+
+		return response.data;
+	}
 }

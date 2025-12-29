@@ -13,7 +13,7 @@ export const TextInput = ({
 	label,
 	placeholder,
 	type = "text",
-	className = "focus-visible:ring-fuchsia-600",
+	className = "",
 	required = false,
 }) => {
 	return (
@@ -22,13 +22,13 @@ export const TextInput = ({
 			name={name}
 			render={({ field }) => {
 				return (
-					<FormItem>
+					<FormItem className={className}>
 						<FormLabel className="text-fuchsia-600">
 							{label} {required && "*"}
 						</FormLabel>
 						<FormControl>
 							<Input
-								className={className}
+								className="focus-visible:ring-fuchsia-600"
 								type={type}
 								placeholder={placeholder}
 								{...field}

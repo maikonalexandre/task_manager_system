@@ -16,7 +16,7 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 		["dev", "test"].includes(env.VITE_ENVIRONMENT) &&
 		env.VITE_ENABLE_REQUEST_DELAY
 	) {
-		await new Promise((res, _) => setTimeout(res, 3000));
+		await new Promise((res, _) => setTimeout(res, 1000));
 	}
 
 	config.headers["Content-Type"] = "application/json";

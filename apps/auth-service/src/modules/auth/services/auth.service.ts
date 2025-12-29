@@ -91,4 +91,9 @@ export class AuthService {
 			refresh_token: refreshToken,
 		};
 	}
+
+	async list() {
+		const { count, users } = await this.usersRepository.findAll();
+		return { users, count };
+	}
 }

@@ -1,13 +1,14 @@
 import {
 	Body,
 	Controller,
+	Get,
 	HttpCode,
 	HttpStatus,
 	Post,
 	UseGuards,
 } from "@nestjs/common";
 import { GetCurrentUser } from "src/common/current-user-decorator";
-import { JwtRefreshAuthGuard } from "src/common/jwt.guard";
+import { JwtAuthGuard, JwtRefreshAuthGuard } from "src/common/jwt.guard";
 import { AuthService } from "../../../modules/auth/services/auth.service";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
@@ -32,5 +33,10 @@ export class AuthController {
 	@HttpCode(HttpStatus.OK)
 	refresh(@GetCurrentUser() user: { sub: string }) {
 		return this.auth.refresh(user.sub);
+	}
+
+	@Get("users")
+	list() {
+		return this.auth.list();
 	}
 }

@@ -34,9 +34,9 @@ export const createTaskSchema = z.object({
 	description: z
 		.string()
 		.min(3, { message: "Descrição precisa ter pelo menos 3 digitos!" }),
-	deadline: z.coerce.date(),
-	priority: z.enum(TaskPriority),
-	status: z.enum(TaskStatus),
+	deadline: z.coerce.date("Selecione o prazo para task!"),
+	priority: z.enum(TaskPriority, { error: "Selecione uma prioridade!" }),
+	status: z.enum(TaskStatus, { error: "Selecioner um status!" }),
 	assignedUserIds: z.uuidv4().array().optional(),
 });
 

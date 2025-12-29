@@ -11,7 +11,13 @@ const register = async (body: UserRegisterProps) => {
 	return data;
 };
 
+const listUsers = async () => {
+	const { data } = await api.get("/auth/users");
+	return data;
+};
+
 export const AuthService = {
 	login,
 	register,
+	listUsers,
 };

@@ -56,7 +56,7 @@ export const TaskCard = ({
 					variant="secondary"
 					className={cn(TASK_STATUS_ICONS[status].bgColor)}
 				>
-					{TASK_STATUS_ICONS[status].icon} {status}
+					{TASK_STATUS_ICONS[status].icon} {status.replace("_", " ")}
 				</Badge>
 				<p className="text-zinc-700 font-medium line-clamp-2">
 					{title.toUpperCase()}

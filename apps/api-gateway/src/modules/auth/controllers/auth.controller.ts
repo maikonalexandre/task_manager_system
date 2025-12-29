@@ -1,19 +1,23 @@
 import {
 	Body,
 	Controller,
+	Get,
 	Headers,
 	HttpCode,
 	HttpStatus,
 	Post,
+	UseGuards,
 } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
+	ApiBearerAuth,
 	ApiConflictResponse,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
+import { JwtVerifyGuard } from "src/common/jwt.guard";
 import { LoginUserDto } from "../dto/login-user.dto";
 import { RegisterUserDto } from "../dto/register-user.dto";
 import { AuthService } from "../services/auth.service";
@@ -46,7 +50,16 @@ export class AuthController {
 	@ApiOperation({ summary: "Generate a new auth token" })
 	@ApiOkResponse({ description: "New auth token generated" })
 	@ApiUnauthorizedResponse({ description: "Invalid refresh token" })
-	refresh(@Headers("x-refresh-token") header: string) {
-		return this.auth.refresh(header);
+	refresh(@Headers("x-refresh-token") token: string) {
+		return this.auth.refresh(token);
+	}
+
+	@Get("users")
+	@UseGuards(JwtVerifyGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "List all users" })
+	@ApiOkResponse({ description: "List of all users" })
+	list() {
+		return this.auth.list();
 	}
 }
