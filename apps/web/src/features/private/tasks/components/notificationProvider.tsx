@@ -7,6 +7,19 @@ import { env } from "../../../../config/env";
 import { router } from "../../../../router";
 import { useAuthStore } from "../../../../store/use-auth-store";
 
+const showNotificationToast = (data: { message: string; taskId: string }) => {
+	toast(data.message, {
+		action: {
+			label: "Ver mais...",
+			onClick: () =>
+				router.navigate({
+					to: "/tasks/$taskId",
+					params: { taskId: data.taskId },
+				}),
+		},
+	});
+};
+
 export function NotificationProvider({ children }: { children: ReactNode }) {
 	const { accessToken } = useAuthStore();
 	const socketRef = useRef<Socket | null>(null);
@@ -25,17 +38,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 			console.error("❌ WS error", err.message),
 		);
 
-		socket.on(WS_EVENTS.COMMENT_CREATED, (data) => {
-			toast(data.message, {
-				action: {
-					label: "Ver mais...",
-					onClick: () =>
-						router.navigate({
-							to: "/tasks/$taskId",
-							params: { taskId: data.taskId },
-						}),
-				},
-			});
+		Object.entries(WS_EVENTS).forEach(([_, event]) => {
+			socket.on(event, showNotificationToast);
 		});
 
 		socketRef.current = socket;
@@ -44,5 +48,5 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 		};
 	}, [accessToken]);
 
-	return <>{children}</>;
+	return children;
 }

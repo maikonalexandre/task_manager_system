@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import {
 	CreateTaskProps,
 	PaginationQueryProps,
+	Task,
 	UpdateTaskProps,
 } from "@repo/shared";
 import { Repository } from "typeorm";
@@ -33,7 +34,8 @@ export class TaskTypeOrmRepository {
 
 	async update(id: string, data: UpdateTaskProps) {
 		await this.repo.update(id, data);
-		return this.repo.findOneBy({ id });
+		const task = await this.repo.findOneBy({ id });
+		return task as Task;
 	}
 
 	async findAndCount({ order, page, size }: FindAndCountProps) {

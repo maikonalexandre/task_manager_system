@@ -21,9 +21,10 @@ export class NotificationGateway implements OnGatewayConnection {
 		event,
 	}: {
 		userId: string;
-		payload: { message: string; taskId: string };
 		event: string;
+		payload: { message: string; taskId: string };
 	}) {
+		console.log("Calling");
 		this.server.to(userId).emit(event, payload);
 	}
 }

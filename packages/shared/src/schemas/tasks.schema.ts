@@ -61,3 +61,17 @@ export type UpdateTaskProps = z.infer<typeof updateTaskSchema>;
 export type Task = z.infer<typeof taskSchema>;
 
 export type CreateTaskHistoryProps = z.infer<typeof createTaskHistorySchema>;
+
+export const createTaskEventSchema = z.object({
+	taskId: z.uuid(),
+	task: taskSchema,
+});
+
+export const updateTaskEventSchema = z.object({
+	taskId: z.uuid(),
+	oldTaskSnapshot: taskSchema,
+	newTaskSnapshot: taskSchema,
+});
+
+export type CreateTaskEventPayload = z.infer<typeof createTaskEventSchema>;
+export type UpdateTaskEventPayload = z.infer<typeof updateTaskEventSchema>;

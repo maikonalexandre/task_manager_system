@@ -1,11 +1,14 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import {
+	CreateTaskEventPayload,
 	CreateTaskProps,
 	PaginationQueryProps,
 	RABBITMQ_CONFIG,
 	RABBITMQ_EVENTS,
 	TASK_ACTIONS,
+	Task,
+	UpdateTaskEventPayload,
 	UpdateTaskProps,
 } from "@repo/shared";
 import { TaskHistoryTypeOrmRepository } from "../repositories/history.entity";
@@ -32,11 +35,10 @@ export class TasksService {
 			oldValue: null,
 		});
 
-		this.client.emit(RABBITMQ_EVENTS.TASK_CREATED, {
-			id: task.id,
-			title: task.title,
-			timestamp: new Date(),
-		});
+		this.client.emit<string, CreateTaskEventPayload>(
+			RABBITMQ_EVENTS.TASK_CREATED,
+			{ task, taskId: task.id },
+		);
 
 		return task;
 	}
@@ -105,11 +107,14 @@ export class TasksService {
 			oldValue: task,
 		});
 
-		this.client.emit(RABBITMQ_EVENTS.TASK_UPDATED, {
-			id: task.id,
-			title: task.title,
-			timestamp: new Date(),
-		});
+		this.client.emit<string, UpdateTaskEventPayload>(
+			RABBITMQ_EVENTS.TASK_UPDATED,
+			{
+				oldTaskSnapshot: task,
+				newTaskSnapshot: updatedTask,
+				taskId: task.id,
+			},
+		);
 
 		return updatedTask;
 	}
