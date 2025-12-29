@@ -14,9 +14,9 @@ export const api = axios.create({
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 	if (
 		["dev", "test"].includes(env.VITE_ENVIRONMENT) &&
-		env.VITE_ENABLE_REQUEST_DELAY
+		env.VITE_REQUEST_DELAY_MS
 	) {
-		await new Promise((res, _) => setTimeout(res, 1000));
+		await new Promise((res, _) => setTimeout(res, env.VITE_REQUEST_DELAY_MS));
 	}
 
 	config.headers["Content-Type"] = "application/json";

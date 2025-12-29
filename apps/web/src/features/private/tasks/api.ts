@@ -41,6 +41,10 @@ const create = async (body: CreateTaskProps) => {
 	return await api.post(`/tasks`, body);
 };
 
+const deleteTask = async ({ id }: { id: string }) => {
+	return await api.delete(`/tasks/${id}`);
+};
+
 const createComment = async (body: CreateCommentProps, id: string) => {
 	return await api.post(`/tasks/${id}/comments`, body);
 };
@@ -54,6 +58,7 @@ export const TasksService = {
 	create,
 	update,
 	getById,
+	deleteTask,
 	getComments,
 	createComment,
 };
