@@ -41,6 +41,31 @@ Sistema de gerenciamento de tasks usando uma arquitetura de serviços distribuid
 * **Biome**: Ferramenta rápida para linting e formatação de código.
 * **TypeScript**: Tipagem estática em todo o projeto (Back e Front).
 
+## 📂 Organização do Projeto
+
+### Backend: Arquitetura Modular (NestJS)
+Cada microserviço em `apps/` organiza-se em módulos independentes:
+* **`src/modules/`**: Divisão por domínio (Auth, Task, Notification).
+    * `controllers`: Portas de entrada da API.
+    * `services`: Lógica de negócio.
+    * `repositories`: Abtração type orm.
+    * `entities/dto`: Definições de dados e validações.
+* **`src/config/`**: Configurações de infraestrutura (DB, RabbitMQ, Env).
+
+### Frontend: Feature-Based Architecture
+O frontend segue uma organização orientada a funcionalidades:
+* **`src/features/`**: Divisão por domínio (ex: `tasks`, `auth`).
+* **`src/routes/`**: Definição de rotas tipadas com **TanStack Router**.
+* **`src/hooks/`**: Hooks globais e gerenciamento de cache com **TanStack Query**.
+* **`src/components/`**: Componentes de UI genéricos (shadcn/ui).
+* **`src/store/`**: Gerenciamento de estado global com **Zustand**.
+
+### Divisão de Responsabilidades (Serviços)
+* **`api-gateway`**: Centralizador, validação de RS256 e proxy reverso.
+* **`auth-service`**: Gestão de usuários e emissão de tokens.
+* **`tasks-service`**: Domínio de tarefas, comentários e histórico.
+* **`notifications-service`**: Consumer de RabbitMQ e servidor de WebSockets.
+
 ## 🧠 Decisões Técnicas
 
 #### API Gateway como Ponto Único de Entrada
