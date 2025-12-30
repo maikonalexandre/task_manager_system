@@ -18,8 +18,55 @@ Sistema de gerenciamento de tasks usando uma arquitetura de serviços distribuid
 * **Processamento de Notificação:** O **Serviço de Notificação** consome o evento da fila e registra a notificação no seu próprio banco de dados.
 * **Tempo Real:** O Serviço de Notificação envia o alerta ao cliente via **WebSocket** (através do túnel mantido pelo Gateway).
 
-## Decisões técnicas
+## 🛠️ Tecnologias e Ferramentas
 
+### Backend (Microserviços)
+* **NestJS**: Framework core para os microserviços e gateway.
+* **RabbitMQ**: Message Broker para comunicação assíncrona entre serviços.
+* **TypeORM**: ORM para abstração e gerenciamento do banco de dados.
+* **Passport & JWT (RS256)**: Estratégia de autenticação e proteção de rotas.
+* **Socket.io**: Comunicação bidirecional (WebSockets) para notificações em tempo real.
+ 
+### Frontend
+* **React && Vite**
+* **shadcn/ui**: Componentes de UI acessíveis e customizáveis (Radix UI + Tailwind).
+* **TanStack Router**: Roteamento baseado em tipos para o React.
+* **TanStack Query (React Query)**: Gerenciamento de estado de dados e cache de requisições.
+* **Zustand**: Gerenciamento de estado global simples e performático.
+* **Zod**: Validação de esquemas e contratos de dados.
+
+### Infraestrutura & DevTools
+* **Turborepo**: Orquestração do monorepo e cache de build/dev.
+* **Docker & Docker Compose**: Containerização da infraestrutura (DB, RabbitMQ).
+* **Biome**: Ferramenta rápida para linting e formatação de código.
+* **TypeScript**: Tipagem estática em todo o projeto (Back e Front).
+
+## 🧠 Decisões Técnicas
+
+#### API Gateway como Ponto Único de Entrada
+O Gateway foi implementado para centralizar o tráfego externo. Ele é responsável por:
+* **Abstração de Complexidade:** O cliente não precisa conhecer o endereço de cada microserviço, apenas o do Gateway.
+* **Segurança Centralizada:** A validação do Token JWT acontece aqui, evitando que cada serviço precise implementar sua própria lógica de autenticação.
+* **Gestão de WebSockets:** O Gateway atua como o túnel que permite a comunicação real-time entre os serviços internos e o cliente.
+
+#### Autenticação RS256 (Assimetria)
+Diferente do HS256 (chave única), o **RS256** utiliza um par de chaves pública/privada:
+* **Privacidade:** Apenas o Serviço de Autenticação possui a chave privada para assinar os tokens.
+* **Desacoplamento:** O Gateway utiliza apenas a chave pública para verificar a integridade do token. Isso significa que, se o Gateway for invadido, o invasor não conseguirá gerar novos tokens falsos.
+
+#### Comunicação Interna via HTTP
+Optou-se pelo protocolo **HTTP** para a comunicação entre o Gateway e os serviços internos devido à:
+* **Simplicidade e Padronização:** Facilita a depuração (logs claros) e possui suporte nativo em praticamente todos os frameworks.
+* **Semântica:** O uso de métodos (GET, POST, DELETE) e Status Codes (201, 401, 500) torna o fluxo de dados autoexplicativo dentro da infraestrutura.
+
+## 🚧 Problemas Conhecidos e Melhorias Futuras
+- **Testes:** O foco atual foi a implementação de regra de negocio e infraestrutura. E de extrema importância a implementação de testes unitários, integração e e2e para deploys em produção.
+- **Observabilidade Centralizada:** Por ser uma arquitetura distribuida, a depuração de erros pode ser um processo delicado a implementção de um tracing distribuido (como Jaeger ou OpenTelemetry) facilitaria o processo.
+- **Resiliência na Mensageria:** As mensagens que falham durante o processo deveriam ser enviadas para uma fila de reprocessamento evitando perda de dados.
+- **Filtros de busca:** Hoje taks não possuem filtros de busca além da paginação. Ter a possibilidade de filtrar por status e prioridade melhoraria muito experiência do usuário.
+- **Virtualização:** Hoje há um sistema de rolagem infinita na pagina de tasks, mas não há virtualização, isso pode atrapalhar na performance da página e na experiencia do usuário, uma vez que quando há muitos elementos renderizados em tela a apliciação pode começar a travar.
+- **Segurança:** Hoje todos os usuário tem permissão de excluir uma task, pensando em uma aplicação para produção o ideal seria implementar um sistema de **Role based authentication**
+- **Melhorias na experiência do usuário:** Melhorias simples que podem ser feitas que vão agregar muito na experiencia do usuário são: modais de confirmação, filtros de busca, separar tasks em colunas. 
 
 
 ## 🛠️ Pré-requisitos
@@ -54,6 +101,33 @@ npm install
 ```bash
 npm run dev
 ```
+
+## 🔑 Gerando Chaves RS256 (Base64)
+Como o projeto utiliza criptografia assimétrica, você precisa gerar um par de chaves e adicioná-las às variáveis de ambiente em formato Base64.
+
+### 1. Gerar os arquivos .pem
+
+No seu terminal, execute:
+
+```bash
+# Gerar chave privada
+openssl genrsa -out private.pem 2048
+
+# Gerar chave pública
+openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+```
+
+### 2. Converter para base64
+
+```bash
+# Converter chave privada
+base64 -w 0 private.pem > private_base64.txt
+
+# Converter chave pública
+base64 -w 0 public.pem > public_base64.txt
+```
+
+> Como uma alternativa voce pode acessar https://www.base64encode.org/ para fazer o encoding.
 
 ## ⏱️ Tempo Gasto e Esforço
 
