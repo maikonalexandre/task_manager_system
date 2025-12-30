@@ -4,10 +4,15 @@ import { useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
 import { env } from "../../../../config/env";
+import { queryClient } from "../../../../config/react-query";
 import { router } from "../../../../router";
 import { useAuthStore } from "../../../../store/use-auth-store";
+import { getTasksQueryKey } from "../key";
 
-const showNotificationToast = (data: { message: string; taskId: string }) => {
+const onReceiveNotification = (data: { message: string; taskId: string }) => {
+	queryClient.invalidateQueries({
+		queryKey: getTasksQueryKey.detail({ id: data.taskId }),
+	});
 	toast(data.message, {
 		action: {
 			label: "Ver mais...",
@@ -39,7 +44,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 		);
 
 		Object.entries(WS_EVENTS).forEach(([_, event]) => {
-			socket.on(event, showNotificationToast);
+			socket.on(event, onReceiveNotification);
 		});
 
 		socketRef.current = socket;
