@@ -12,13 +12,13 @@ export const useLoginMutation = () => {
 
 		onError: (e) => {
 			if (axios.isAxiosError(e)) {
-				return toast.error("Ouve uma falha ao fazer login!", {
+				return toast.error("Houve uma falha ao fazer login!", {
 					description: e.response?.data?.message,
 				});
 			}
 
 			console.error(e);
-			toast.error("Ouve uma falha ao fazer login!");
+			toast.error("Houve uma falha ao fazer login!");
 		},
 
 		onSuccess: () => {

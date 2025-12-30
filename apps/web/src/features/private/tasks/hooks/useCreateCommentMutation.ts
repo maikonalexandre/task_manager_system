@@ -12,13 +12,13 @@ export const useCreateCommentMutation = ({ id }: { id: string }) => {
 
 		onError: (e) => {
 			if (axios.isAxiosError(e)) {
-				return toast.error("Ouve uma falha ao adicionar comentário!", {
+				return toast.error("Houve uma falha ao adicionar comentário!", {
 					description: e.response?.data?.message,
 				});
 			}
 
 			console.error(e);
-			toast.error("Ouve uma falha ao adicionar comentário!");
+			toast.error("Houve uma falha ao adicionar comentário!");
 		},
 
 		onSuccess: async () => {

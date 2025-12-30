@@ -18,13 +18,13 @@ export const useUpdateTaskMutation = () => {
 
 		onError: (e) => {
 			if (axios.isAxiosError(e)) {
-				return toast.error("Ouve uma falha ao criar uma task!", {
+				return toast.error("Houve uma falha ao criar uma task!", {
 					description: e.response?.data?.message,
 				});
 			}
 
 			console.error(e);
-			toast.error("Ouve uma falha ao criar uma task!");
+			toast.error("Houve uma falha ao criar uma task!");
 		},
 
 		onSuccess: async () => {

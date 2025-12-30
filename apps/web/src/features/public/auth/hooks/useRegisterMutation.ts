@@ -13,13 +13,13 @@ export const useRegisterMutation = () => {
 
 		onError: (e) => {
 			if (axios.isAxiosError(e)) {
-				return toast.error("Ouve uma falha ao registrar usuário!", {
+				return toast.error("Houve uma falha ao registrar usuário!", {
 					description: e.response?.data?.message,
 				});
 			}
 
 			console.error(e);
-			toast.error("Ouve uma falha ao registrar usuário!");
+			toast.error("Houve uma falha ao registrar usuário!");
 		},
 
 		onSuccess: async () => {
