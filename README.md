@@ -1,78 +1,115 @@
-# Desafio Full-stack Júnior — Sistema de Gestão de Tarefas Colaborativo
+# Task Manager System 📝
 
-Bem‑vindo(a)! Este é um **teste prático** para a vaga de **Full‑stack Developer Júnior** na **Jungle Gaming**. O objetivo é avaliar sua capacidade de estruturar um monorepo, modelar um domínio simples, construir uma UI funcional e integrar serviços usando mensageria.
-
-> **Stack Obrigatória**
->
-> * **Front‑end:** React.js + **TanStack Router**, **shadcn/ui**, **Tailwind CSS**
-> * **Back‑end:** **Nest.js**, **TypeORM**, **RabbitMQ** (microservices Nest)
-> * **Infra/DevX:** **Docker & docker‑compose**, **Monorepo com Turborepo**
-
----
-
-## 🎯 Contexto & Objetivo
-
-Construir um **Sistema de Gestão de Tarefas Colaborativo** com autenticação simples, CRUD de tarefas, comentários, atribuição e notificações. O sistema deve rodar em **monorepo** e expor uma **UI** limpa, responsiva e usável. O back‑end deve ser composto por **microserviços Nest** que se comunicam via **RabbitMQ**; o acesso HTTP externo passa por um **API Gateway** (Nest HTTP).
-
-**O que queremos observar:**
-
-* Organização, clareza e pragmatismo.
-* Segurança básica (hash de senha, validação de entrada).
-* Divisão de responsabilidades entre serviços.
-* Qualidade da UI e DX (developer experience).
-
----
-
-## 🧱 Requisitos Funcionais
-
-### Autenticação & Gateway
-
-* **JWT** com **cadastro/login** (email, username, password) e **proteção de rotas no API Gateway**.
-* **Hash de senha** com **bcrypt** (ou argon2).
-* **Tokens:** `accessToken` (15 min) e `refreshToken` (7 dias) + **endpoint de refresh**.
-* **Swagger/OpenAPI** exposto no Gateway.
-
-### Tarefas (inclui comentários e histórico)
-
-* **CRUD completo** com campos: **título**, **descrição**, **prazo**, **prioridade** (`LOW`, `MEDIUM`, `HIGH`, `URGENT`) e **status** (`TODO`, `IN_PROGRESS`, `REVIEW`, `DONE`).
-* **Atribuição a múltiplos usuários**.
-* **Comentários**: criar e listar em cada tarefa.
-* **Histórico de alterações** (audit log simplificado).
-
-### Notificações & Tempo Real
-
-* Ao **criar/atualizar/comentar** uma tarefa, **publicar evento** no broker (**RabbitMQ**).
-* Serviço de **notifications** consome da fila, **persiste** e **entrega via WebSocket**.
-* WebSocket notifica quando:
-
-  * a tarefa é **atribuída** ao usuário;
-  * o **status** da tarefa muda;
-  * há **novo comentário** em tarefa da qual participa.
-
-### Docker
-
-* **Obrigatório subir tudo com Docker Compose** (serviços do app, broker, dbs, etc.).
+<img width="1508" height="606" alt="image" src="https://github.com/user-attachments/assets/63159475-b4be-49d4-b5cb-b375d6543d2c" />
 
 
-## ⚡ HTTP Endpoints & WebSocket Events
+## 👋 Introdução
+Sistema de gerenciamento de tasks usando uma arquitetura de serviços distribuidos. Usa serviços Nest Js com comunicação asyncrona via Rabbit Mq entre os serviços.
 
-### HTTP (Gateway)
+## 👋 Arquitetura
+<img width="1358" height="462" alt="image" src="https://github.com/user-attachments/assets/89f50354-b5c0-4f5b-9915-4cc6cea4ae55" />
 
+### 🔄 Descrição simples do fluxo (criação de task)
+
+* **Autenticação:** O cliente solicita login ao Gateway, que encaminha a requisição para o **Serviço de Autenticação**. Este devolve um **Token JWT (RS256)** e um *refresh token*.
+* **Segurança:** A partir deste momento, todas as requisições são verificadas pelo **Gateway** de forma independente utilizando a **Chave Pública**.
+* **Criação de Task:** O cliente solicita a criação de uma tarefa. O Gateway valida o token e encaminha para o **Serviço de Tasks**.
+* **Persistência e Evento:** O Serviço de Tasks salva os dados no banco de dados e, em seguida, publica um evento no **RabbitMQ**.
+* **Processamento de Notificação:** O **Serviço de Notificação** consome o evento da fila e registra a notificação no seu próprio banco de dados.
+* **Tempo Real:** O Serviço de Notificação envia o alerta ao cliente via **WebSocket** (através do túnel mantido pelo Gateway).
+
+## 🛠️ Tecnologias e Ferramentas
+
+### Backend (Microserviços)
+* **NestJS**: Framework core para os microserviços e gateway.
+* **RabbitMQ**: Message Broker para comunicação assíncrona entre serviços.
+* **TypeORM**: ORM para abstração e gerenciamento do banco de dados.
+* **Passport & JWT (RS256)**: Estratégia de autenticação e proteção de rotas.
+* **Socket.io**: Comunicação bidirecional (WebSockets) para notificações em tempo real.
+ 
+### Frontend
+* **React && Vite**
+* **shadcn/ui**: Componentes de UI acessíveis e customizáveis (Radix UI + Tailwind).
+* **TanStack Router**: Roteamento baseado em tipos para o React.
+* **TanStack Query (React Query)**: Gerenciamento de estado de dados e cache de requisições.
+* **Zustand**: Gerenciamento de estado global simples e performático.
+* **Zod**: Validação de esquemas e contratos de dados.
+
+### Infraestrutura & DevTools
+* **Turborepo**: Orquestração do monorepo e cache de build/dev.
+* **Docker & Docker Compose**: Containerização da infraestrutura (DB, RabbitMQ).
+* **Biome**: Ferramenta rápida para linting e formatação de código.
+* **TypeScript**: Tipagem estática em todo o projeto (Back e Front).
+
+## 📂 Organização do Projeto
+
+### Backend: Arquitetura Modular (NestJS)
+Cada microserviço em `apps/` organiza-se em módulos independentes:
+* **`src/modules/`**: Divisão por domínio (Auth, Task, Notification).
+    * `controllers`: Portas de entrada da API.
+    * `services`: Lógica de negócio.
+    * `repositories`: Abtração type orm.
+    * `entities/dto`: Definições de dados e validações.
+* **`src/config/`**: Configurações de infraestrutura (DB, RabbitMQ, Env).
+
+### Frontend: Feature-Based Architecture
+O frontend segue uma organização orientada a funcionalidades:
+* **`src/features/`**: Divisão por domínio (ex: `tasks`, `auth`).
+* **`src/routes/`**: Definição de rotas tipadas com **TanStack Router**.
+* **`src/hooks/`**: Hooks globais e gerenciamento de cache com **TanStack Query**.
+* **`src/components/`**: Componentes de UI genéricos (shadcn/ui).
+* **`src/store/`**: Gerenciamento de estado global com **Zustand**.
+
+### Divisão de Responsabilidades (Serviços)
+* **`api-gateway`**: Centralizador, validação de RS256 e proxy reverso.
+* **`auth-service`**: Gestão de usuários e emissão de tokens.
+* **`tasks-service`**: Domínio de tarefas, comentários e histórico.
+* **`notifications-service`**: Consumer de RabbitMQ e servidor de WebSockets.
+
+## 🧠 Decisões Técnicas
+
+#### API Gateway como Ponto Único de Entrada
+O Gateway foi implementado para centralizar o tráfego externo. Ele é responsável por:
+* **Abstração de Complexidade:** O cliente não precisa conhecer o endereço de cada microserviço, apenas o do Gateway.
+* **Segurança Centralizada:** A validação do Token JWT acontece aqui, evitando que cada serviço precise implementar sua própria lógica de autenticação.
+* **Gestão de WebSockets:** O Gateway atua como o túnel que permite a comunicação real-time entre os serviços internos e o cliente.
+
+#### Autenticação RS256 (Assimetria)
+Diferente do HS256 (chave única), o **RS256** utiliza um par de chaves pública/privada:
+* **Privacidade:** Apenas o Serviço de Autenticação possui a chave privada para assinar os tokens.
+* **Desacoplamento:** O Gateway utiliza apenas a chave pública para verificar a integridade do token. Isso significa que, se o Gateway for invadido, o invasor não conseguirá gerar novos tokens falsos.
+
+#### Comunicação Interna via HTTP
+Optou-se pelo protocolo **HTTP** para a comunicação entre o Gateway e os serviços internos devido à:
+* **Simplicidade e Padronização:** Facilita a depuração (logs claros) e possui suporte nativo em praticamente todos os frameworks.
+* **Semântica:** O uso de métodos (GET, POST, DELETE) e Status Codes (201, 401, 500) torna o fluxo de dados autoexplicativo dentro da infraestrutura.
+
+## 🚧 Problemas Conhecidos e Melhorias Futuras
+- **Testes:** O foco atual foi a implementação de regra de negocio e infraestrutura. E de extrema importância a implementação de testes unitários, integração e e2e para deploys em produção.
+- **Observabilidade Centralizada:** Por ser uma arquitetura distribuida, a depuração de erros pode ser um processo delicado a implementção de um tracing distribuido (como Jaeger ou OpenTelemetry) facilitaria o processo.
+- **Resiliência na Mensageria:** As mensagens que falham durante o processo deveriam ser enviadas para uma fila de reprocessamento evitando perda de dados.
+- **Filtros de busca:** Hoje taks não possuem filtros de busca além da paginação. Ter a possibilidade de filtrar por status e prioridade melhoraria muito experiência do usuário.
+- **Virtualização:** Hoje há um sistema de rolagem infinita na pagina de tasks, mas não há virtualização, isso pode atrapalhar na performance da página e na experiencia do usuário, uma vez que quando há muitos elementos renderizados em tela a apliciação pode começar a travar.
+- **Segurança:** Hoje todos os usuário tem permissão de excluir uma task, pensando em uma aplicação para produção o ideal seria implementar um sistema de **Role based authentication**
+- **Melhorias na experiência do usuário:** Melhorias simples que podem ser feitas que vão agregar muito na experiencia do usuário são: modais de confirmação, filtros de busca, separar tasks em colunas. 
+
+
+## 🛠️ Pré-requisitos
+
+Para rodar este projeto localmente, você precisará ter instalado em sua máquina:
+
+* **Node.js**: Versão 22 ou superior.
+* **Package Manager**: `npm`, `pnpm` ou `yarn`.
+* **Docker & Docker Compose**: Essencial para subir os containers do **RabbitMQ** e dos **Bancos de Dados**.
+
+## 🌪️ Quick Start
+
+1. Clone o projeto
+```sh
+git clone https://github.com/maikonalexandre/task_manager_system
 ```
-POST   /api/auth/register
-POST   /api/auth/login
-POST   /api/auth/refresh
 
-GET    /api/tasks?page=&size=               # lista de tarefas com paginação
-POST   /api/tasks                           # cria e publica `task.created`
-GET    /api/tasks/:id
-PUT    /api/tasks/:id                       # atualiza e publica `task.updated`
-DELETE /api/tasks/:id
-
-POST   /api/tasks/:id/comments              # publica `task.comment.created`
-GET    /api/tasks/:id/comments?page=&size   # lista de comentários com paginação
-```
-
+<<<<<<< HEAD
 ### WebSocket Events
 
 * `task:created` – tarefa foi criada
@@ -123,272 +160,60 @@ GET    /api/tasks/:id/comments?page=&size   # lista de comentários com paginaç
 ├── turbo.json
 ├── package.json
 └── README.md
+=======
+2. Vá para pasta do projeto
+```sh
+cd task_manager_system
+>>>>>>> f1ff7d64c288227572d92f02d4369d8a40f5f241
 ```
 
----
-
-## 🧭 Front-end (exigências)
-
-* **React.js** com **TanStack Router**.
-* **UI:** mínimo 5 componentes com **shadcn/ui** + **Tailwind CSS**.
-* **Páginas obrigatórias:**
-  * Login/Register com validação (Pode ser um modal)
-  * Lista de tarefas com filtros e busca
-  * Detalhe da tarefa com comentários
-* **Estado:** Context API ou Zustand para auth.
-* **WebSocket:** conexão para notificações em tempo real.
-* **Validação:** `react-hook-form` + `zod`.
-* **Loading/Error:** Skeleton loaders (shimmer effect) e toast notifications.
-
-> **Diferencial:** TanStack Query.
-
----
-
-## 🛠️ Back-end (exigências)
-
-* **Nest.js** com **TypeORM** (PostgreSQL).
-* **JWT** com Guards e estratégias Passport.
-* **Swagger** completo no Gateway (`/api/docs`).
-* **DTOs** com `class-validator` e `class-transformer`.
-* **Microserviços** Nest.js com **RabbitMQ**.
-* **WebSocket** Gateway para eventos real-time.
-* **Migrations** com TypeORM.
-* **Rate limiting** no API Gateway (10 req/seg).
-
-> **Diferencial:** health checks, Logging com Winston ou Pino, testes unitários.
-
----
-
-## 🐳 Docker & Compose (sugerido)
-
-```yaml
-version: '3.8'
-
-services:
-  # Frontend React Application
-  web:
-    container_name: web
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile
-      target: development
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
-    networks:
-      - challenge-network
-    command: npm run dev -- --host 0.0.0.0
-
-  # API Gateway
-  api-gateway:
-    container_name: api-gateway
-    build:
-      context: .
-      dockerfile: ./apps/api-gateway/Dockerfile
-      target: development
-    ports:
-      - '3001:3001'
-    volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/api-gateway/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3001
-    depends_on:
-      db:
-        condition: service_started
-      rabbitmq:
-        condition: service_started
-    networks:
-      - challenge-network
-
-  # Auth Service
-  auth-service:
-    container_name: auth-service
-    build:
-      context: .
-      dockerfile: ./apps/auth-service/Dockerfile
-      target: development
-    ports:
-      - '3002:3002'
-    volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/auth-service/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3002
-    depends_on:
-      db:
-        condition: service_started
-      rabbitmq:
-        condition: service_started
-    networks:
-      - challenge-network
-
-  # Tasks Service
-  tasks-service:
-    container_name: tasks-service
-    build:
-      context: .
-      dockerfile: ./apps/tasks-service/Dockerfile
-      target: development
-    ports:
-      - '3003:3003'
-    volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/tasks-service/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3003
-    depends_on:
-      db:
-        condition: service_started
-      rabbitmq:
-        condition: service_started
-    networks:
-      - challenge-network
-
-  # Notifications Service
-  notifications-service:
-    container_name: notifications-service
-    build:
-      context: .
-      dockerfile: ./apps/notifications-service/Dockerfile
-      target: development
-    ports:
-      - '3004:3004'
-    volumes:
-      - .:/app
-      - ./packages:/app/packages
-      - /app/node_modules
-      - /app/apps/notifications-service/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3004
-    depends_on:
-      db:
-        condition: service_started
-      rabbitmq:
-        condition: service_started
-    networks:
-      - challenge-network
-
-  # Postgres Database
-  db:
-    image: postgres:17.5-alpine3.21
-    container_name: db
-    attach: false
-    ports:
-      - '5432:5432'
-    networks:
-      - challenge-network
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: challenge_db
-
-  # RabbitMQ
-  rabbitmq:
-    image: rabbitmq:3.13-management-alpine
-    container_name: rabbitmq
-    attach: false
-    restart: always
-    ports:
-      - '5672:5672'
-      - '15672:15672'
-    networks:
-      - challenge-network
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
-    volumes: ['rabbitmq_data:/var/lib/rabbitmq']
-
-volumes:
-  postgres_data:
-    driver: local
-  rabbitmq_data:
-    driver: local
-
-networks:
-  challenge-network:
-    driver: bridge
+3. Instale as dependências
+```sh
+npm install
 ```
 
----
+4. Env:
+- Configure o .env de cada serviço (utilize .env.example como exemplo)
 
-## 📝 Documentação Esperada
+#### 🤖 Executando o projeto
+```bash
+npm run dev
+```
 
-No seu README, inclua:
+## 🔑 Gerando Chaves RS256 (Base64)
+Como o projeto utiliza criptografia assimétrica, você precisa gerar um par de chaves e adicioná-las às variáveis de ambiente em formato Base64.
 
-1. **Arquitetura** (diagrama simples ASCII ou imagem)
-2. **Decisões técnicas** e trade-offs
-3. **Problemas conhecidos** e o que melhoraria
-4. **Tempo gasto** em cada parte
-5. **Instruções específicas** se houver
+### 1. Gerar os arquivos .pem
 
----
+No seu terminal, execute:
 
-## 📚 Material de Referência
+```bash
+# Gerar chave privada
+openssl genrsa -out private.pem 2048
 
-Para auxiliar no desenvolvimento deste desafio, disponibilizamos alguns conteúdos que podem ser úteis:
+# Gerar chave pública
+openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+```
 
-### Vídeos Recomendados
+### 2. Converter para base64
 
-* **[Autenticação centralizada em microsserviços NestJS](https://www.youtube.com/watch?v=iiSTB0btEgA)** - Como implementar autenticação centralizada em uma arquitetura de microsserviços usando NestJS.
-* **[Tutorial de Microservices com Nest.js em 20 Minutos](https://www.youtube.com/watch?v=C250DCwS81Q)** - Passo a passo rápido para criar e conectar microsserviços no NestJS.
+```bash
+# Converter chave privada
+base64 -w 0 private.pem > private_base64.txt
 
-Estes materiais são sugestões para apoiar seu desenvolvimento, mas sinta-se livre para buscar outras referências que julgar necessárias.
+# Converter chave pública
+base64 -w 0 public.pem > public_base64.txt
+```
 
----
+> Como uma alternativa voce pode acessar https://www.base64encode.org/ para fazer o encoding.
 
-## ❓ FAQ
+## ⏱️ Tempo Gasto e Esforço
 
-**Posso usar NextJS ao invés de React puro?**
-Não. React com TanStack Router é obrigatório.
-
-**Preciso implementar reset de senha?**
-Não é obrigatório, mas seria um diferencial.
-
-**WebSocket é obrigatório?**
-Sim, para notificações em tempo real.
-
-**Posso usar Prisma ou MikroORM ao invés de TypeORM?**
-Não. TypeORM é requisito obrigatório.
-
----
-
-## 📧 Suporte e Dúvidas
-
-Caso tenha alguma dúvida sobre o teste ou precise de esclarecimentos:
-
-* Entre em contato com o **recrutador que enviou este teste**
-* Ou envie um e-mail para: **recruitment@junglegaming.io**
-
-Responderemos o mais breve possível para garantir que você tenha todas as informações necessárias para realizar o desafio.
-
----
-
-## 🕒 Prazo
-
-* **Entrega:** 14 dias corridos a partir do recebimento
-
----
-
-## 💡 Dicas Finais
-
-* **Comece pelo básico:** Auth → CRUD → RabbitMQ → WebSocket.
-* **Logs claros:** Facilita debug do fluxo assíncrono.
-
----
-
-**Boa sorte!** 🚀
+| Categoria | Descrição | Tempo Estimado |
+| :--- | :--- | :--- |
+| **Infra & Setup** | Configuração do Monorepo (Turborepo), Docker, ambientes e arquitetura base. | ≃8h |
+| **Auth & Gateway** | Implementação do Auth Service + api gateway, geração de chaves RS256 e lógica de Refresh Token. | ≃21h |
+| **Serviço de Tasks** | Desenvolvimento do CRUD de tarefas, persistência em banco de dados e integração RabbitMQ. | ≃18h |
+| **Serviço de Notificação** | Consumo de mensageria, persistência de alertas e lógica de WebSocket. | ≃12h |
+| **Front-end** | Interface do usuário, integração com Gateway (Auth/Tasks) e listener de notificações. | ≃16h |
+| **Documentação/Refino** | Escrita do README, diagramas e testes finais. | ≃6h |
