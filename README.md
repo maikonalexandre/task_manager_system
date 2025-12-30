@@ -86,39 +86,39 @@ GET    /api/tasks/:id/comments?page=&size   # lista de comentários com paginaç
 ```
 .
 ├── apps/
-│   ├── web/                     
+│   ├── web/
 │   │   ├── src/                  # React + TanStack Router + shadcn + Tailwind
-│   │   ├── Dockerfile   
+│   │   ├── Dockerfile
 │   │   ├── .env.example          # variáveis de ambiente do frontend
-│   │   ├── package.json              
-│   ├── api-gateway/   
+│   │   ├── package.json
+│   ├── api-gateway/
 │   │   ├── src/                  # HTTP + WebSocket + Swagger
 │   │   ├── Dockerfile
 │   │   ├── .env.example          # variáveis do API Gateway (Nest.js)
 │   │   ├── package.json
-│   ├── auth-service/            
+│   ├── auth-service/
 │   │   ├── src/                  # Nest.js (microserviço de autenticação)
 │   │   ├── migrations/
 │   │   ├── Dockerfile
 │   │   ├── .env.example          # variáveis do serviço de autenticação
 │   │   ├── package.json
-│   ├── tasks-service/   
+│   ├── tasks-service/
 │   │   ├── src/                  # Nest.js (microserviço RabbitMQ)
 │   │   ├── migrations/
-│   │   ├── Dockerfile        
+│   │   ├── Dockerfile
 │   │   ├── .env.example          # variáveis do serviço de tarefas
 │   │   ├── package.json
-│   └── notifications-service/   
+│   └── notifications-service/
 │       ├── src/                  # Nest.js (microserviço RabbitMQ + WebSocket)
 │       ├── migrations/
 │       ├── Dockerfile
 │       ├── .env.example          # variáveis do serviço de notificações
-│       ├── package.json                
+│       ├── package.json
 ├── packages/
-│   ├── types/                   
-│   ├── utils/                   
-│   ├── eslint-config/           
-│   └── tsconfig/                
+│   ├── types/
+│   ├── utils/
+│   ├── eslint-config/
+│   └── tsconfig/
 ├── docker-compose.yml
 ├── turbo.json
 ├── package.json
