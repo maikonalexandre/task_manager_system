@@ -109,58 +109,6 @@ Para rodar este projeto localmente, você precisará ter instalado em sua máqui
 git clone https://github.com/maikonalexandre/task_manager_system
 ```
 
-<<<<<<< HEAD
-### WebSocket Events
-
-* `task:created` – tarefa foi criada
-* `task:updated` – tarefa foi atualizada
-* `comment:new` – novo comentário
-
----
-
-## 🏗️ Estrutura do Monorepo (sugerida)
-
-```
-.
-├── apps/
-│   ├── web/
-│   │   ├── src/                  # React + TanStack Router + shadcn + Tailwind
-│   │   ├── Dockerfile
-│   │   ├── .env.example          # variáveis de ambiente do frontend
-│   │   ├── package.json
-│   ├── api-gateway/
-│   │   ├── src/                  # HTTP + WebSocket + Swagger
-│   │   ├── Dockerfile
-│   │   ├── .env.example          # variáveis do API Gateway (Nest.js)
-│   │   ├── package.json
-│   ├── auth-service/
-│   │   ├── src/                  # Nest.js (microserviço de autenticação)
-│   │   ├── migrations/
-│   │   ├── Dockerfile
-│   │   ├── .env.example          # variáveis do serviço de autenticação
-│   │   ├── package.json
-│   ├── tasks-service/
-│   │   ├── src/                  # Nest.js (microserviço RabbitMQ)
-│   │   ├── migrations/
-│   │   ├── Dockerfile
-│   │   ├── .env.example          # variáveis do serviço de tarefas
-│   │   ├── package.json
-│   └── notifications-service/
-│       ├── src/                  # Nest.js (microserviço RabbitMQ + WebSocket)
-│       ├── migrations/
-│       ├── Dockerfile
-│       ├── .env.example          # variáveis do serviço de notificações
-│       ├── package.json
-├── packages/
-│   ├── types/
-│   ├── utils/
-│   ├── eslint-config/
-│   └── tsconfig/
-├── docker-compose.yml
-├── turbo.json
-├── package.json
-└── README.md
-=======
 2. Vá para pasta do projeto
 ```sh
 cd task_manager_system
