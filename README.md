@@ -112,7 +112,6 @@ git clone https://github.com/maikonalexandre/task_manager_system
 2. Vá para pasta do projeto
 ```sh
 cd task_manager_system
->>>>>>> f1ff7d64c288227572d92f02d4369d8a40f5f241
 ```
 
 3. Instale as dependências
@@ -128,7 +127,13 @@ npm install
 npm run dev
 ```
 
-## 🔑 Gerando Chaves RS256 (Base64)
+ou 
+
+```bash
+docker compose up
+```
+
+ ## 🔑 Gerando Chaves RS256 (Base64)
 Como o projeto utiliza criptografia assimétrica, você precisa gerar um par de chaves e adicioná-las às variáveis de ambiente em formato Base64.
 
 ### 1. Gerar os arquivos .pem
